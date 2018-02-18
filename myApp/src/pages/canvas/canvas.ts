@@ -1,4 +1,4 @@
-import { Component, ViewChild, Renderer } from '@angular/core';
+import { Component, ViewChild, Renderer, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 // import { CanvasPageModule } from "./canvas.module"
@@ -16,6 +16,11 @@ import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
   templateUrl: 'canvas.html',
 })
 export class CanvasPage {
+
+  @HostListener('window:resize', ['$event']) 
+  onResize(event){
+    console.log("Width: " + event.target.innerWidth);
+  }
 
   @ViewChild('myCanvas') canvas: any;
  
@@ -45,7 +50,7 @@ export class CanvasPage {
     this.canvasElement = this.canvas.nativeElement;
 
     this.renderer.setElementAttribute(this.canvasElement, 'width', this.platform.width() + '');
-    this.renderer.setElementAttribute(this.canvasElement, 'height', this.platform.height() + '');
+    this.renderer.setElementAttribute(this.canvasElement, 'height', this.platform.height()*3/4 + '');
 
   }
 
