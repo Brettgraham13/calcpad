@@ -23,13 +23,21 @@ export class CanvasPage {
   lastX: number;
   lastY: number;
 
-  currentColour: string = '#1abc9c';
+  currentColor: string = '#1abc9c';
   brushSize: number = 10;
 
   // constructor(public navCtrl: NavController, public navParams: NavParams) {
   // }
   constructor(public platform: Platform, public renderer: Renderer) {
     console.log('Hello CanvasDraw Component');
+
+    this.availableColors = [
+      '#1abc9c',
+      '#3498db',
+      '#9b59b6',
+      '#e67e22',
+      '#e74c3c'
+    ];
   }
 
   ngAfterViewInit(){
@@ -39,6 +47,14 @@ export class CanvasPage {
     this.renderer.setElementAttribute(this.canvasElement, 'width', this.platform.width() + '');
     this.renderer.setElementAttribute(this.canvasElement, 'height', this.platform.height() + '');
 
+  }
+
+  changeColor(color){
+    this.currentColor = color;
+  }
+
+  changeSize(size){
+    this.brushSize = size;
   }
 
   handleStart(ev){
@@ -58,13 +74,18 @@ export class CanvasPage {
     ctx.moveTo(this.lastX, this.lastY);
     ctx.lineTo(currentX, currentY);
     ctx.closePath();
-    ctx.strokeStyle = this.currentColour;
+    ctx.strokeStyle = this.currentColor;
     ctx.lineWidth = this.brushSize;
     ctx.stroke();      
 
     this.lastX = currentX;
     this.lastY = currentY;
 
+  }
+
+  clearCanvas(){
+    let ctx = this.canvasElement.getContext('2d');
+    ctx.clearRect(0,0,this.canvasElement.width,this.canvasElement.height);
   }
 
   // ionViewDidLoad() {
