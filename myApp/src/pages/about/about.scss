@@ -1,3 +1,21 @@
 page-about {
+    button {
+        width: 300px;
+        height: 150px;
+
+        background: darkorchid;
+        color: white;
+        border-radius: 30px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        font: 2em serif;
+    }
+
+    button:active {
+        transform: translateY(5px);
+        background:opacity(darkorchid);
+
+    }
+
 
 }
