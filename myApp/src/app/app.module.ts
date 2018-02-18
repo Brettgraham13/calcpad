@@ -18,6 +18,7 @@ import { CanvasPage } from '../pages/canvas/canvas';
     AboutPage,
     ContactPage,
     HomePage,
+    CanvasPage,
     TabsPage
   ],
   imports: [
@@ -29,7 +30,7 @@ import { CanvasPage } from '../pages/canvas/canvas';
     MyApp,
     AboutPage,
     ContactPage,
-    CanvasPage
+    CanvasPage,
     HomePage,
     TabsPage
   ],
