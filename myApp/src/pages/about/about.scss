@@ -11,10 +11,12 @@ page-about {
         font: 2em serif;
     }
 
+    button:hover {
+        background: rgba( darkorchid, $alpha: 0.8)
+    }
+
     button:active {
         transform: translateY(5px);
-        background:opacity(darkorchid);
-
     }
 
 

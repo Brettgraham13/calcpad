@@ -1,3 +1,49 @@
-page-home {
+page-calc {
+
+    .screen {
+        margin: 2%;
+        width: 94%;
+        height: 12%;
+
+        background: rgb(3, 3, 56);
+        color: white;
+        border-radius: 5px;
+        transition-duration: 0.4s;
+
+    }
+
+
+    button {
+        margin: 2%;
+        width: 20%;
+        height: 12%;
+
+        background: slateblue;
+        color: white;
+        border-radius: 20px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        font: 2em sans-serif;
+    }
+
+    button:hover {
+        background: rgba(  slateblue, $alpha: 0.8);
+    }
+
+    button:active {
+        transform: translateY(5px);
+    }
+
+    button.equals {
+        background: lightgrey;
+        margin: 2%;
+        width: 44%;
+        height: 12%;
+
+    }
+
+    button.equals:hover {
+        background: rgba(  lightgrey, $alpha: 0.8);
+    }
 
 }
