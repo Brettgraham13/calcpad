@@ -17,7 +17,7 @@
     <p>
         This is where the canvas will be!
     </p>
-    <canvas>
+    <canvas #myCanvas (touchstart)="handleStart($event)" (touchmove)="handleMove($event)">
 
   </canvas>
 </ion-content>
