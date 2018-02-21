@@ -31,6 +31,8 @@ export class CanvasPage {
   currentColor: string = '#1abc9c';
   brushSize: number = 10;
 
+  availableColors: string [];
+
   // constructor(public navCtrl: NavController, public navParams: NavParams) {
   // }
   constructor(public platform: Platform, public renderer: Renderer) {
