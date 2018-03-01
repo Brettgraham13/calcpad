@@ -1,5 +1,17 @@
 page-contact {
 
+    .content {
+        //width: 400px;
+        padding: 20px;
+        //overflow: hidden;
+    }
+    
+    .content img {
+        border-radius: 50%;
+        margin-right: 15px;
+        float: left;
+    }
+
     img {
         border-radius: 50%;
     }
