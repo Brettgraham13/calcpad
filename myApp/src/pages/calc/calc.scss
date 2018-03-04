@@ -1,49 +1,46 @@
 page-calc {
 
-    .screen {
+    
+
+    .display {
         margin: 2%;
         width: 94%;
         height: 12%;
 
-        background: rgb(3, 3, 56);
-        color: white;
+        background: whitesmoke;
+        color: black;
+        font-size: 2em sans-serif;
         border-radius: 5px;
-        transition-duration: 0.4s;
 
     }
 
 
-    button {
+    input {
         margin: 2%;
         width: 20%;
         height: 12%;
 
-        background: slateblue;
+        background: lightskyblue;
         color: white;
         border-radius: 20px;
-        transition-duration: 0.4s;
+        transition-duration: 0.1s;
         cursor: pointer;
         font: 2em sans-serif;
+
     }
 
-    button:hover {
-        background: rgba(  slateblue, $alpha: 0.8);
+
+
+    input:active {
+        transform: translateY(3px);
     }
 
-    button:active {
-        transform: translateY(5px);
-    }
-
-    button.equals {
+    input.equals {
         background: lightgrey;
         margin: 2%;
         width: 44%;
         height: 12%;
 
-    }
-
-    button.equals:hover {
-        background: rgba(  lightgrey, $alpha: 0.8);
     }
 
 }

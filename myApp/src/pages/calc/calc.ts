@@ -11,4 +11,16 @@ export class CalcPage {
 
   }
 
+
+  screen = "";
+
+  copyToDisplay = function(input: any) {
+    this.screen = this.screen += input;
+  }
+
+  clearDisplay = function() {
+    this.screen = "";
+  }
 }
+
+
