@@ -22,8 +22,9 @@ export class CanvasPage {
     console.log("Width: " + event.target.innerWidth);
   }
 
-  @ViewChild('myCanvas') canvas: any;
- 
+  @ViewChild('myCanvas') 
+
+  canvas: any;
   canvasElement: any;
   lastX: number;
   lastY: number;
@@ -84,7 +85,7 @@ export class CanvasPage {
     ctx.strokeStyle = this.currentColor;
     ctx.lineWidth = this.brushSize;
     ctx.stroke();      
-
+  
     this.lastX = currentX;
     this.lastY = currentY;
 
