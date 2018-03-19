@@ -5,50 +5,48 @@
 </ion-header>
 
 <ion-content padding>
-    <h2>This will be a calculator soon!</h2>
-    <p>
-        This used to be our home screen lol.
-    </p>
 
-    <div class="screen">  </div>
 
-    <button> c </button>
 
-    <button> +/- </button>
+    <div class="display"> {{screen}} </div>
+
+    <input type="button" value="c" (click)="clearDisplay()">
+
+    <input type="button" value="(" (click)="copyToDisplay('(')">
     
-    <button> % </button>
+    <input type="button" value=")" (click)="copyToDisplay(')')">
     
-    <button> / </button>
+    <input type="button" value="/" (click)="copyToDisplay('/')">
 
-    <button> 7 </button>
+    <input type="button" value="7" (click)="copyToDisplay(7)">
 
-    <button> 8 </button>
+    <input type="button" value="8" (click)="copyToDisplay(8)">
     
-    <button> 9 </button>
+    <input type="button" value="9" (click)="copyToDisplay(9)">
     
-    <button> * </button>
+    <input type="button" value="*" (click)="copyToDisplay('*')">
 
-    <button> 4 </button>
+    <input type="button" value="4" (click)="copyToDisplay(4)">
 
-    <button> 5 </button>
+    <input type="button" value="5" (click)="copyToDisplay(5)">
 
-    <button> 6 </button>
+    <input type="button" value="6" (click)="copyToDisplay(6)">
 
-    <button> - </button>
+    <input type="button" value="-" (click)="copyToDisplay('-')">
 
-    <button> 1 </button>
+    <input type="button" value="1" (click)="copyToDisplay(1)">
 
-    <button> 2 </button>
+    <input type="button" value="2" (click)="copyToDisplay(2)">
 
-    <button> 3 </button>
+    <input type="button" value="3" (click)="copyToDisplay(3)">
 
-    <button> + </button>
+    <input type="button" value="+" (click)="copyToDisplay('+')">
 
-    <button> 0 </button>
+    <input type="button" value="0" (click)="copyToDisplay(0)">
 
-    <button> . </button>
+    <input type="button" value="." (click)="copyToDisplay('.')">
 
-    <button class="equals" > = </button>
+    <input type="button" value="=" (click)="compute()" class="equals">
 
 
 </ion-content>
