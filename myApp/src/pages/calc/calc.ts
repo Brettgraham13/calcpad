@@ -14,6 +14,19 @@ export class CalcPage {
 
   screen = "";
 
+  //Swipe the display to delete the last character from the string
+  swipe = function($e){
+    if(this.screen.length != 0){
+      if($e.offsetDirection == 2){
+        this.screen = this.screen.substring(0, this.screen.length-1);
+      }
+      else if($e.offsetDirection == 4){
+        // Swiped right
+        this.screen = this.screen.substring(1);
+      }
+    }
+  }
+
   compute = function(){
     if(this.validString(this.screen)){
       this.screen = this.stringToMath(this.screen).toString();
@@ -93,7 +106,7 @@ export class CalcPage {
   }
 
   startsWithOperation = function(str){
-    var operations = ["+", "-", "*", "/"];
+    var operations = ["+", "*", "/"];
     if(operations.indexOf(str.charAt(0)) != -1){
       return(true);
     }

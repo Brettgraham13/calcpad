@@ -8,7 +8,7 @@
 
 
 
-    <div class="display"> {{screen}} </div>
+    <div class="display" (swipe) = "swipe($event)"> {{screen}} </div>
 
     <input type="button" value="c" (click)="clearDisplay()">
 
