@@ -5,6 +5,7 @@ import { NavController } from 'ionic-angular';
   selector: 'page-calc',
   templateUrl: 'calc.html'
 })
+
 export class CalcPage {
 
   constructor(public navCtrl: NavController) {
@@ -13,8 +14,23 @@ export class CalcPage {
 
   screen = "";
 
+  //Swipe the display to delete the last character from the string
+  swipe = function($e){
+    if(this.screen.length != 0){
+      if($e.offsetDirection == 2){
+        this.screen = this.screen.substring(0, this.screen.length-1);
+      }
+      else if($e.offsetDirection == 4){
+        // Swiped right
+        this.screen = this.screen.substring(1);
+      }
+    }
+  }
+
   compute = function(){
-    this.screen = this.stringToMath(this.screen).toString();
+    if(this.validString(this.screen)){
+      this.screen = this.stringToMath(this.screen).toString();
+    }
   }
 
   copyToDisplay = function(input: any) {
@@ -23,6 +39,132 @@ export class CalcPage {
 
   clearDisplay = function() {
     this.screen = "";
+  }
+
+  validString = function(str){
+    // cases to consider: 
+
+    //Empty string
+    if(this.screen.length == 0){
+      return(false);
+    }
+
+    // two operations in a row
+    if(this.twoSeqOperations(str)){
+      //Throw an error message!
+      alert("Invalid input. Your expression contains two sequential operations.")
+      return(false);
+    }
+
+    // Starts with an operation
+    if(this.startsWithOperation(str)){
+      //Throw an error message!
+      alert("Invalid input. Your expression begins with an operation.")
+      return(false);
+    }
+
+    // ends with an operation
+    if(this.endsWithOperation(str)){
+      //Throw an error message!
+      alert("Invalid input. Your expression ends with an operation.")
+      return(false);
+    }
+
+    // parentheses issues
+    if(this.tooManyClosePar(str)){
+      //Throw an error message!
+      alert("Invalid input. Your expression has more close parentheses than open parentheses.")
+      return(false);
+    }
+
+    // operation immediately after open or before close parentheses
+    if(this.badOperationInParentheses(str)){
+      //Throw an error message
+      alert("Invalid input. Your expression has an operation immediately after an open parenthesis or before a close parenthesis.")
+      return(false);
+    }
+
+    //More than one period in a number
+    if(this.tooManyDecimals(str)){
+      //Throw an error message!
+      alert("Invalid input. One of your numbers contains more than one periods. ")
+      return(false);
+    }
+
+    return(true);
+
+  }
+
+  twoSeqOperations = function(str){
+    var indices = this.indicesOfOperations(str);
+    for(var i = 0; i < indices.length; i++){
+      if(indices[i] + 1 == indices[i+1]){
+        return(true);
+      }
+    }
+    return(false);
+  }
+
+  startsWithOperation = function(str){
+    var operations = ["+", "*", "/"];
+    if(operations.indexOf(str.charAt(0)) != -1){
+      return(true);
+    }
+    return(false);
+  }
+
+  endsWithOperation = function(str){
+    var operations = ["+", "-", "*", "/"];
+    if(operations.indexOf(str.charAt(str.length-1)) != -1){
+      return(true);
+    }
+    return(false);
+  }
+
+  tooManyDecimals = function(str){
+    var numDec = 0;
+    for(var i = 0; i < str.length; i++){
+        if(str.charAt(i) == "."){
+          numDec++;
+        }
+        if(numDec > 1){
+          return true;
+        }
+        if(str.charAt(i) == "+" || str.charAt(i) == "-" || str.charAt(i) == "*" || str.charAt(i) == "/"){
+          numDec = 0;
+        }
+    }
+    return(false);
+  }
+
+  tooManyClosePar = function(str){
+    var numOpen = 0;
+    var numClose = 0;
+    for(var i = 0; i < str.length; i++){
+        if(str.charAt(i) == "("){
+          numOpen++;
+        }
+        if(str.charAt(i) == ")"){
+          numClose++;
+        }
+        if(numClose > numOpen){
+          return(true);
+        }
+    }
+    if(numOpen > numClose){return(true)};
+    return(false);
+  }
+
+  badOperationInParentheses = function(str){
+    for(var i = 0; i < str.length; i++){
+      if(str.charAt(i) == "(" && str.charAt(i+1) == "*"){
+        return(true);
+      }
+      if(str.charAt(i) == ")" && str.charAt(i-1) == "*"){
+        return(true);
+      }
+    }
+    return(false);
   }
 
   //*** Note 
@@ -117,21 +259,10 @@ export class CalcPage {
     return(i-1);
   }
 
-  stringToMath(str){
-    //get the number of operations in the string
-    var indices = this.indicesOfOperations(str);
-    var numOp = indices.length;
+  grabNumbers = function(str, indices){
     var nums: Number[] = new Array();
+    var numOp = indices.length;
     var i = 0;
-
-    //Handle parentheses, still can't do nested parentheses
-    if(str.indexOf("(") != -1){
-      var parInd = str.indexOf("(") + 1;
-      var parEnd = this.getParClose(str);
-      var parVal = this.stringToMath(str.substring(parInd, parEnd));
-      var newStr = str.substring(0, parInd - 1) + String(parVal) + str.substring(parEnd+1);
-      return this.stringToMath(newStr);
-    }
 
     //Put in the first number
     nums.push(Number(str.substring(0,indices[0])));
@@ -145,9 +276,59 @@ export class CalcPage {
     //Put in the last number
     nums.push(Number(str.substring(indices[numOp - 1] + 1)));
 
+    return nums;
+  }
+
+  impliedMultiplications = function(str){
+    var i = 1;
+    var numChar = str.length;
+
+    while(i < numChar - 1){
+      if(str.charAt(i) == "(" && str.charAt(i-1) != "*" && str.charAt(i-1) != "/" && str.charAt(i-1) != "+" && str.charAt(i-1) != "-"){
+        // update string with a "*" at index i
+        str = str.substring(0, i) + "*" + str.substring(i);
+        i++;
+      }
+      if(str.charAt(i) == ")" && str.charAt(i+1) != "*" && str.charAt(i+1) != "/" && str.charAt(i+1) != "+" && str.charAt(i+1) != "-"){
+        // update string with a "*" at index i+1
+        str = str.substring(0, i+1) + "*" + str.substring(i+1);
+        i++;
+    }
+
+      i++;
+      numChar = str.length;
+    }
+    
+    return str;
+  }
+
+
+  stringToMath = function(str){
+    //get the number of operations in the string
+    var indices = this.indicesOfOperations(str);
+
+    //Insert implied multiplications (parentheses next to numbers without an operator)
+    str = this.impliedMultiplications(str);
+
+    //Handle parentheses
+    if(str.indexOf("(") != -1){
+      var parInd = str.indexOf("(") + 1;
+      var parEnd = this.getParClose(str);
+      var parVal = this.stringToMath(str.substring(parInd, parEnd));
+      var newStr = str.substring(0, parInd - 1) + String(parVal) + str.substring(parEnd+1);
+      return this.stringToMath(newStr);
+    }
+
+    //If there are no operations to be done, just return the string as a number
+    if(indices.length == 0){
+      return(Number(str));
+    }
+
+    var nums = this.grabNumbers(str, indices);
+
     //If the only operations are multiplication and division just return the val
     var flag = true;
-    for(i = 0; i < indices.length; i++){
+    for(var i = 0; i < indices.length; i++){
       if(str.charAt(indices[i]) == "+" || str.charAt(indices[i]) == "-"){
         flag = false;
       }
