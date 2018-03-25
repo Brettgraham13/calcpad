@@ -8,6 +8,7 @@ import { MyScriptCanvasPage } from './my-script-canvas';
   ],
   imports: [
     IonicPageModule.forChild(MyScriptCanvasPage),
+    
   ],
 })
 export class MyScriptCanvasPageModule {}

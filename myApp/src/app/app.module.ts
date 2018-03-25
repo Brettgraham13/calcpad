@@ -7,10 +7,12 @@ import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { CalcPage } from '../pages/calc/calc';
 import { TabsPage } from '../pages/tabs/tabs';
+import { MyScriptCanvasPage } from '../pages/my-script-canvas/my-script-canvas';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { CanvasPage } from '../pages/canvas/canvas';
+
 
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ import { CanvasPage } from '../pages/canvas/canvas';
     ContactPage,
     CalcPage,
     CanvasPage,
-    TabsPage
+    TabsPage,
+    MyScriptCanvasPage
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,8 @@ import { CanvasPage } from '../pages/canvas/canvas';
     ContactPage,
     CanvasPage,
     CalcPage,
-    TabsPage
+    TabsPage,
+    MyScriptCanvasPage
   ],
   providers: [
     StatusBar,
