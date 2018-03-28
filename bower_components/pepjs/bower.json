@@ -15,15 +15,5 @@
     "node_modules",
     "test"
   ],
-  "version": "0.4.3",
-  "_release": "0.4.3",
-  "_resolution": {
-    "type": "version",
-    "tag": "0.4.3",
-    "commit": "5d7ce092b9f69c4c9ee5b885db3c6768c2f90d3d"
-  },
-  "_source": "https://github.com/jquery/PEP.git",
-  "_target": "^0.4.3",
-  "_originalSource": "pepjs",
-  "_direct": true
+  "version": "0.4.3"
 }

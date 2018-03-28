@@ -22,16 +22,5 @@
     "!package.json",
     "!bower.json",
     "!dist/**/*"
-  ],
-  "version": "4.1.2",
-  "_release": "4.1.2",
-  "_resolution": {
-    "type": "version",
-    "tag": "v4.1.2",
-    "commit": "fdc8daed71330cce06ee3b5418aca38c538b0437"
-  },
-  "_source": "https://github.com/MyScript/MyScriptJS.git",
-  "_target": "^4.1.2",
-  "_originalSource": "myscript",
-  "_direct": true
+  ]
 }

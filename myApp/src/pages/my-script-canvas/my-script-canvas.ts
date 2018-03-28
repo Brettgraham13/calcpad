@@ -1,39 +1,13 @@
-// import { Component } from '@angular/core';
-// import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-// /**
-//  * Generated class for the MyScriptCanvasPage page.
-//  *
-//  * See https://ionicframework.com/docs/components/#navigation for more info on
-//  * Ionic pages and navigation.
-//  */
-
-// @IonicPage()
-// @Component({
-//   selector: 'page-my-script-canvas',
-//   templateUrl: 'my-script-canvas.html',
-// })
-// export class MyScriptCanvasPage {
-
-//   constructor(public navCtrl: NavController, public navParams: NavParams) {
-//   }
-
-//   ionViewDidLoad() {
-//     console.log('ionViewDidLoad MyScriptCanvasPage');
-//   }
-
-// }
-
 import { Component, AfterViewInit, ViewChild,  ElementRef, ViewEncapsulation} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import * as MyScriptJS from '/Users/ionatankuperwajs/Desktop/Macalester/Senior 2/Software/calcpad/myApp/bower_components/myscript/dist/myscript.min.js';
-// import * as myscriptmathweb from '/Users/ionatankuperwajs/Desktop/Macalester/Senior 2/Software/calcpad/myApp/bower_components/myscript-math-web/';
+
+import * as MyScriptJS from 'myscript/dist/myscript.min.js';
 
 @IonicPage()
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'page-my-script-canvas',
-  templateUrl: 'my-script-canvas.html',
+  templateUrl: 'my-script-canvas.html'
   // styleUrls: ['my-script-canvas.scss']
 })
 export class MyScriptCanvasPage implements AfterViewInit {
