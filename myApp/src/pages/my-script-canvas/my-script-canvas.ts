@@ -19,7 +19,7 @@ export class MyScriptCanvasPage implements AfterViewInit {
      console.log(this.domEditor.nativeElement);
      this.editor = MyScriptJS.register(this.domEditor.nativeElement, {
       recognitionParams: {
-        type: 'TEXT',
+        type: 'MATH',
         protocol: 'WEBSOCKET',
         apiVersion: 'V4',
         server: {
@@ -30,5 +30,6 @@ export class MyScriptCanvasPage implements AfterViewInit {
         },
       },
     });
+
   }
 }
