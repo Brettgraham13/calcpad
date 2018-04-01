@@ -12,7 +12,14 @@ export class CalcPage {
 
   }
 
+  // NOTES: divide by zero is handled differently from all other errors. Maybe should be fixed up, but it might be difficult
+  // Make decisions about how large of numbers we want to allow
+  // I made it so that e is treated like an operation for error handling
+  // Minus signs at the beginning of a string, right after another symbol indicate a negative number. 
+
   screen = "";
+  //Global flag to keep track of whether the string should be updated at the end
+  globalFlag = true;
 
   //Swipe the display to delete the last character from the string
   swipe = function($e){
@@ -34,7 +41,10 @@ export class CalcPage {
   }
 
   copyToDisplay = function(input: any) {
-    this.screen = this.screen += input;
+    if(!this.screenIsInfinity(this.screen)){
+      this.screen = this.screen += input;
+    }
+    else(alert("The value is Infinity. Please clear the screen before making any additional inputs."))
   }
 
   clearDisplay = function() {
@@ -91,8 +101,54 @@ export class CalcPage {
       return(false);
     }
 
+    //empty parentheses
+    if(this.emptyParentheses(str)){
+      //Throw an error message!
+      alert("Invalid input. The input contains and empty set of parentheses. ")
+      return(false);
+    }
+
+    //really big numbers and people editing the string around e
+    if(this.badEInput(str)){
+      alert("Invalid input. Something went wrong around the character 'e'");
+      return(false);
+    }
+
+    //Two sequential negatives
+    if(this.twoSeqNegatives(str)){
+      alert("Invalid input. Two or more consecutive '-'");
+      return(false);
+    }
+
+    if(this.operationsAfterMinus(str)){
+      alert("Invalid input. Operation after minus sign.");
+      return(false);
+    }
+
+
     return(true);
 
+  }
+
+  operationsAfterMinus = function(str){
+    var ops = ['*', '+', '/']
+    for(var i = 0; i < str.length-1; i++){
+      if(str.charAt(i) == '-'){
+        if(ops.some(x=>x===str.charAt(i+1))){
+          return(true);
+        }
+      }
+    }
+    return(false);
+  }
+
+  twoSeqNegatives = function(str){
+    for(var i = 0; i < str.length-1; i++){
+      if(str.charAt(i) == '-' && str.charAt(i+1) == '-'){
+        return true;
+      }
+    }
+    return(false);
   }
 
   twoSeqOperations = function(str){
@@ -106,7 +162,7 @@ export class CalcPage {
   }
 
   startsWithOperation = function(str){
-    var operations = ["+", "*", "/"];
+    var operations = ["+", "*", "/", 'e'];
     if(operations.indexOf(str.charAt(0)) != -1){
       return(true);
     }
@@ -114,7 +170,7 @@ export class CalcPage {
   }
 
   endsWithOperation = function(str){
-    var operations = ["+", "-", "*", "/"];
+    var operations = ["+", "-", "*", "/", 'e'];
     if(operations.indexOf(str.charAt(str.length-1)) != -1){
       return(true);
     }
@@ -167,6 +223,44 @@ export class CalcPage {
     return(false);
   }
 
+  emptyParentheses = function(str){
+    for(var i = 0; i < str.length-1; i++){
+      if(str.charAt(i) == '(' && str.charAt(i+1) == ')'){
+        return(true);
+      }
+    }
+    return(false);
+  }
+
+  badEInput = function(str){
+    var pm = ['+', '-'];
+    var digs = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']
+    for(var i = 0; i < str.length-1; i++){
+      //If the char is e...
+      if(str.charAt(i) == 'e'){
+        //And the next char isn't a plus or a minus and the previous character isn't a number
+        if(pm.some(x => x === str.charAt(i + 1)) &&  digs.some(x => x === str.charAt(i - 1)) && digs.some(x => x === str.charAt(i+2))){
+          if(str.charAt(i - 1) == '.'){
+            //have to make sure there's a number before the period
+            if(digs.some(x => x === str.charAt(i - 2))){
+              //It's all good
+            }
+            else{return(true);}
+          }
+        }
+        else{return(true);}
+      }
+    }
+    return(false);
+  }
+
+  screenIsInfinity = function(str){
+    if(this.screen == "Infinity"){
+      return true;
+    }
+    return(false);
+  }
+
   //*** Note 
   //
   //All this code should be put into a different file for readability
@@ -178,8 +272,19 @@ export class CalcPage {
     var operations: string[] = ["/", "+", "-", "*"];
     var indices = [];
     for(i ; i < str.length; i++){
-      if(operations.some(x => x === str.charAt(i))){
-        indices.push(i);
+      if(str.charAt(i) == "e"){
+        i++;
+      }
+      else{
+        if(operations.some(x => x === str.charAt(i))){
+          //Negatives have to be wrapped in parentheses, so don't add them if they're preceded by an operation.
+          if(str.charAt(i) == '-' && indices[indices.length - 1] == i - 1){
+            //Do nothing
+          }
+          else{
+            indices.push(i);
+          }
+        }
       }
     }
     return(indices);
@@ -199,6 +304,10 @@ export class CalcPage {
     }
 
     if(operation == "/"){
+      if(num2 == 0){
+        alert("Invalid Input. Divide by zero.")
+        this.globalFlag = false;
+      }
       return num1 / num2;
     }
   }
@@ -326,17 +435,18 @@ export class CalcPage {
 
     var nums = this.grabNumbers(str, indices);
 
-    //If the only operations are multiplication and division just return the val
-    var flag = true;
-    for(var i = 0; i < indices.length; i++){
-      if(str.charAt(indices[i]) == "+" || str.charAt(indices[i]) == "-"){
-        flag = false;
-      }
-    } 
-    if(flag){
-      var answ = this.doMultandDiv(nums, indices, str)[1];
-      return (answ);
-    }
+    //Speed up but doesn't seem very important
+    //If the only operations are multiplication and division and we didn't divide by zero just return the val
+    // var flag = true;
+    // for(var i = 0; i < indices.length; i++){
+    //   if(str.charAt(indices[i]) == "+" || str.charAt(indices[i]) == "-"){
+    //     flag = false;
+    //   }
+    // } 
+    // if(flag && this.globalFlag){
+    //   var answ = this.doMultandDiv(nums, indices, str)[1];
+    //   return (answ);
+    // }
 
 
     //Do all the multiplications and divisions
@@ -360,6 +470,11 @@ export class CalcPage {
     //Do all the additions and subtractions
     for(var i = 0; i < indices.length; i++){
         ans = this.simpleArithmetic(ans, nums[i+1], str.charAt(indices[i]));
+    }
+
+    if(!this.globalFlag){
+      this.globalFlag = true;
+      return this.screen;
     }
 
     return(ans)
