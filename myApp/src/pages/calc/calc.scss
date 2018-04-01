@@ -17,8 +17,11 @@ page-calc {
 
         background: whitesmoke;
         color: black;
-        font: 2em sans-serif;
+        font-size: 1.7em;
+        font-family: sans-serif;
         border-radius: 5px;
+        padding-top: 6%;
+        padding-left: 2%;
 
     }
 
@@ -28,10 +31,11 @@ page-calc {
         height: 50px;
 
         // background: lightskyblue;
-        color: black;
+        // color: black;
         border-radius: 20px;
         transition-duration: 0.1s;
-        font: 2em sans-serif;
+        font-size: 2em;
+        font-family: sans-serif;
 
     }
 
@@ -42,8 +46,15 @@ page-calc {
     }
 
     button.equals {
-        background: lightgrey;
+        // background: lightgrey;
+        background: whitesmoke;
+        color: rgb(44, 128, 255);
         width: 44%;
+
+        :active {
+            color: whitesmoke; 
+
+        }
     }
 
 }
