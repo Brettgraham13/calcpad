@@ -17,10 +17,23 @@ export class CalcPage {
   // Make decisions about how large of numbers we want to allow
   // I made it so that e is treated like an operation for error handling
   // Minus signs at the beginning of a string, right after another symbol indicate a negative number. 
+  // Remember to highlight decision to allow the user to edit the result string and delete characters. More error handling to deal with, but makes sure the user doesn't
+  //    feel like the calculator is broken
+  // Add ionic object that lets you have a cursor on the text box. 
 
   screen = "";
+  error = "Unknown Error"
   //Global flag to keep track of whether the string should be updated at the end
   globalFlag = true;
+
+  presentAlert() {
+    let alert = this.alertCtrl.create({
+      title: 'Invalid input',
+      subTitle: this.error,
+      buttons: ['Dismiss']
+    });
+    alert.present();
+  }
 
   //Swipe the display to delete the last character from the string
   swipe = function($e){
@@ -37,6 +50,9 @@ export class CalcPage {
 
 
   compute = function(){
+    //REMOVE THIS GET BETTER WAY TO TEST
+    this.testingCalls();
+
     if(this.validString(this.screen)){
       this.screen = this.stringToMath(this.screen).toString();
     }
@@ -46,7 +62,10 @@ export class CalcPage {
     if(!this.screenIsInfinity(this.screen)){
       this.screen = this.screen += input;
     }
-    else(alert("The value is Infinity. Please clear the screen before making any additional inputs."))
+    else{
+      this.error = "The value is Infinity. Please clear the screen before making any additional inputs.";
+      this.presentAlert();
+    }
   }
 
   clearDisplay = function() {
@@ -64,66 +83,76 @@ export class CalcPage {
     // two operations in a row
     if(this.twoSeqOperations(str)){
       //Throw an error message!
-      alert("Invalid input. Your expression contains two sequential operations.")
+      this.error = "Your expression contains two sequential operations.";
+      this.presentAlert();
       return(false);
     }
 
     // Starts with an operation
     if(this.startsWithOperation(str)){
       //Throw an error message!
-      alert("Invalid input. Your expression begins with an operation.")
+      this.error = "Your expression begins with an operation.";
+      this.presentAlert();
       return(false);
     }
 
     // ends with an operation
     if(this.endsWithOperation(str)){
       //Throw an error message!
-      alert("Invalid input. Your expression ends with an operation.")
+      this.error = "Your expression ends with an operation.";
+      this.presentAlert();
       return(false);
     }
 
     // parentheses issues
     if(this.tooManyClosePar(str)){
       //Throw an error message!
-      alert("Invalid input. Your expression has more close parentheses than open parentheses.")
+      this.error = "Your expression has an issue with the number of either open or close parentheses.";
+      this.presentAlert();
       return(false);
     }
 
     // operation immediately after open or before close parentheses
     if(this.badOperationInParentheses(str)){
       //Throw an error message
-      alert("Invalid input. Your expression has an operation immediately after an open parenthesis or before a close parenthesis.")
+      this.error = "Your expression has an operation immediately after an open parenthesis or before a close parenthesis.";
+      this.presentAlert();
       return(false);
     }
 
     //More than one period in a number
     if(this.tooManyDecimals(str)){
       //Throw an error message!
-      alert("Invalid input. One of your numbers contains more than one periods. ")
+      this.error = "One of your numbers contains more than one periods. ";
+      this.presentAlert();
       return(false);
     }
 
     //empty parentheses
     if(this.emptyParentheses(str)){
       //Throw an error message!
-      alert("Invalid input. The input contains and empty set of parentheses. ")
+      this.error = "The input contains and empty set of parentheses. ";
+      this.presentAlert();
       return(false);
     }
 
     //really big numbers and people editing the string around e
     if(this.badEInput(str)){
-      alert("Invalid input. Something went wrong around the character 'e'");
+      this.error = "Something went wrong around the character 'e'";
+      this.presentAlert();
       return(false);
     }
 
     //Two sequential negatives
     if(this.twoSeqNegatives(str)){
-      alert("Invalid input. Two or more consecutive '-'");
+      this.error = "Two or more consecutive '-'";
+      this.presentAlert();
       return(false);
     }
 
     if(this.operationsAfterMinus(str)){
-      alert("Invalid input. Operation after minus sign.");
+      this.error = "Operation after minus sign.";
+      this.presentAlert();
       return(false);
     }
 
@@ -307,7 +336,8 @@ export class CalcPage {
 
     if(operation == "/"){
       if(num2 == 0){
-        alert("Invalid Input. Divide by zero.")
+        this.error = "Divide by zero.";
+        this.presentAlert();
         this.globalFlag = false;
       }
       return num1 / num2;
@@ -395,12 +425,12 @@ export class CalcPage {
     var numChar = str.length;
 
     while(i < numChar - 1){
-      if(str.charAt(i) == "(" && str.charAt(i-1) != "*" && str.charAt(i-1) != "/" && str.charAt(i-1) != "+" && str.charAt(i-1) != "-"){
+      if(str.charAt(i) == "(" && (str.charAt(i-1) != "*" && str.charAt(i-1) != "/" && str.charAt(i-1) != "+" && str.charAt(i-1) != "-" && str.charAt(i-1) != "(")){
         // update string with a "*" at index i
         str = str.substring(0, i) + "*" + str.substring(i);
         i++;
       }
-      if(str.charAt(i) == ")" && str.charAt(i+1) != "*" && str.charAt(i+1) != "/" && str.charAt(i+1) != "+" && str.charAt(i+1) != "-"){
+      if(str.charAt(i) == ")" && (str.charAt(i+1) != "*" && str.charAt(i+1) != "/" && str.charAt(i+1) != "+" && str.charAt(i+1) != "-" && str.charAt(i+1) != ")")){
         // update string with a "*" at index i+1
         str = str.substring(0, i+1) + "*" + str.substring(i+1);
         i++;
@@ -418,17 +448,24 @@ export class CalcPage {
     //get the number of operations in the string
     var indices = this.indicesOfOperations(str);
 
+    // console.log(str)
     //Insert implied multiplications (parentheses next to numbers without an operator)
     str = this.impliedMultiplications(str);
+    // console.log(str)
 
     //Handle parentheses
     if(str.indexOf("(") != -1){
       var parInd = str.indexOf("(") + 1;
       var parEnd = this.getParClose(str);
+      //console.log(str);
       var parVal = this.stringToMath(str.substring(parInd, parEnd));
+      //Reupdate in case the string is very different from before
+      parEnd = this.getParClose(str);
       var newStr = str.substring(0, parInd - 1) + String(parVal) + str.substring(parEnd+1);
+      //console.log(newStr);
       return this.stringToMath(newStr);
     }
+
 
     //If there are no operations to be done, just return the string as a number
     if(indices.length == 0){
@@ -482,4 +519,175 @@ export class CalcPage {
     return(ans)
     
   }
+
+  // Unit tests!
+  testingCalls = function(){
+    //Test basic addition
+    var testStr = "6+3";
+    var ans = 9;
+    this.testStringToMath(testStr, ans)
+    
+    // Test basic subtraction
+    testStr = "9-3";
+    ans = 6;
+    this.testStringToMath(testStr, ans)
+
+    //Test basic multiplication
+    testStr = "6*3";
+    ans = 18;
+    this.testStringToMath(testStr, ans)
+
+    //Test basic multiplication
+    testStr = "6/3";
+    ans = 2;
+    this.testStringToMath(testStr, ans)
+
+    //Test linked addition
+    testStr = "6+3+3";
+    ans = 12;
+    this.testStringToMath(testStr, ans)
+
+    //Test linked multiplication
+    testStr = "6*3*4";
+    ans = 72;
+    this.testStringToMath(testStr, ans)
+
+    //Test both addition and multiplication
+    testStr = "6+3*3";
+    ans = 15;
+    this.testStringToMath(testStr, ans)
+
+    //Test all four in one
+    testStr = "6+3*5-6/3";
+    ans = 19;
+    this.testStringToMath(testStr, ans)
+
+    //Test negative numbers with addition
+    testStr = "6+-3";
+    ans = 3;
+    this.testStringToMath(testStr, ans)
+
+    //Test negative numbers with addition
+    testStr = "-6+3";
+    ans = -3;
+    this.testStringToMath(testStr, ans)
+
+    //Test negative numbers with addition
+    testStr = "-6*3";
+    ans = -18;
+    this.testStringToMath(testStr, ans)
+
+    //Test negative numbers with addition
+    testStr = "6*-3";
+    ans = -18;
+    this.testStringToMath(testStr, ans)
+
+    //Test negative numbers with division
+    testStr = "6/-3";
+    ans = -2;
+    this.testStringToMath(testStr, ans)
+
+    //Test negative numbers with division
+    testStr = "-6/3";
+    ans = -2;
+    this.testStringToMath(testStr, ans)
+
+    //Test negative numbers with multiplication
+    testStr = "-6/-3";
+    ans = 2;
+    this.testStringToMath(testStr, ans)
+
+    // Test parentheses
+    testStr = "(6)";
+    ans = 6;
+    this.testStringToMath(testStr, ans)
+
+    // Test parentheses
+    testStr = "(-6)";
+    ans = -6;
+    this.testStringToMath(testStr, ans)
+
+    // Test parentheses
+    testStr = "(6+2)";
+    ans = 8;
+    this.testStringToMath(testStr, ans)
+
+    // Test parentheses
+    testStr = "(6)+2";
+    ans = 8;
+    this.testStringToMath(testStr, ans)
+
+    // Test parentheses
+    testStr = "(6)*2";
+    ans = 12;
+    this.testStringToMath(testStr, ans)
+
+    // Test parentheses
+    testStr = "(6)/2";
+    ans = 3;
+    this.testStringToMath(testStr, ans)
+
+    // Test parentheses
+    testStr = "4+(-6)+2";
+    ans = 0;
+    this.testStringToMath(testStr, ans)
+
+    // Test parentheses
+    testStr = "(6+3)*(6+4)";
+    ans = 90;
+    this.testStringToMath(testStr, ans)
+
+    // Test parentheses
+    testStr = "(6+3)/(9-3+3)";
+    ans = 1;
+    this.testStringToMath(testStr, ans)
+
+    // Test parentheses
+    testStr = "(3+(2+3*2)+3)";
+    ans = 14;
+    this.testStringToMath(testStr, ans)
+
+    // Test parentheses
+    var testStr = "6+(3+(2+3*2)+3)";
+    var ans = 20;
+    this.testStringToMath(testStr, ans)
+
+    // Test parentheses
+    testStr = "(6+(3+(2+3*2)+3))";
+    ans = 20;
+    this.testStringToMath(testStr, ans)
+
+    // Test parentheses
+    testStr = "(6+(3+(2+3*2)+3))/(1+1)";
+    ans = 10;
+    this.testStringToMath(testStr, ans)
+
+    // Test parentheses
+    testStr = "((6+(3+(2+3*2)+3))/(1+1))";
+    ans = 10;
+    this.testStringToMath(testStr, ans)
+
+    // Test parentheses
+    testStr = "2((6+(3+(2+3*2)+3))/(1+1))";
+    ans = 20;
+    this.testStringToMath(testStr, ans)
+
+    // Test parentheses
+    testStr = "((8))";
+    ans = 8;
+    this.testStringToMath(testStr, ans)
+
+  }
+
+  testStringToMath = function(str, ans){
+    var calculatedAnswer = this.stringToMath(str);
+    if(calculatedAnswer != ans){
+      //Test failed!
+      console.log("Test failed for string = " + str + ". Expected " + ans + " and got " + calculatedAnswer + ".")
+    }
+    else{
+      console.log("Test passed!")
+    }
+  }
+
 }

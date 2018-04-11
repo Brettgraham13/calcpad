@@ -5,6 +5,26 @@
   Ionic pages and navigation.
 -->
 
+<script src="bower_components/pepjs/dist/pep.min.js"></script>
+<script src="bower_components/myscript/dist/myscript.min.js"></script>
+<script>
+  MyScript.register(editorElement, {
+    recognitionParams: {
+      type: 'TEXT',
+      protocol: 'WEBSOCKET',
+      apiVersion: 'V4',
+      server: {
+        scheme: 'https',
+        host: 'webdemoapi.myscript.com',
+        applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+        hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+      }
+    }
+  });
+</script>
+
+
+
 <ion-header>  
   <ion-navbar>
     <ion-title>
@@ -14,10 +34,15 @@
 </ion-header>
 
 
+
+
+
+
 <ion-content padding>
-  <div id= "editorElement" #tref> </div>
-  <!-- <myscript-math-web
-    applicationkey="7498d8dc-55db-4f40-8a80-625de7e17bed"
-    hmackey="2ef4521b-5697-4653-8f8f-defede0bac55">
-</myscript-math-web> -->
+    <div id="editor"></div>
+
+
+
+
+
 </ion-content>
