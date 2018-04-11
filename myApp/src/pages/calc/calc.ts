@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
 
 @Component({
   selector: 'page-calc',
@@ -8,7 +9,7 @@ import { NavController } from 'ionic-angular';
 
 export class CalcPage {
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController) {
 
   }
 
@@ -33,6 +34,7 @@ export class CalcPage {
       }
     }
   }
+
 
   compute = function(){
     if(this.validString(this.screen)){

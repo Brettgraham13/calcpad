@@ -12,7 +12,8 @@ page-calc {
 
 
     .display {
-        width: 100%;
+        // width: 100%;
+        width: 300px;
         height: 12%;
 
         background: whitesmoke;
@@ -20,14 +21,12 @@ page-calc {
         font-size: 1.7em;
         font-family: sans-serif;
         border-radius: 5px;
-        padding-top: 6%;
-        padding-left: 2%;
 
     }
 
 
     button {
-        width: 22%;
+        width: 23%;
         height: 50px;
 
         // background: lightskyblue;
@@ -48,11 +47,13 @@ page-calc {
     button.equals {
         // background: lightgrey;
         background: whitesmoke;
-        color: rgb(44, 128, 255);
+        // color: rgb(44, 128, 255);
+        color: color($colors, primary);
         width: 44%;
 
         :active {
-            color: whitesmoke; 
+            background: whitesmoke; 
+            color: color($colors, primary);
 
         }
     }
