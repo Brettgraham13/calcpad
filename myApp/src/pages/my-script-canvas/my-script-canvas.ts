@@ -2,23 +2,24 @@ import { Component, AfterViewInit, ViewChild,  ElementRef, ViewEncapsulation} fr
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import * as MyScriptJS from 'myscript/dist/myscript.min.js';
-import * as PepJS from  'pepjs/dist/pep'
+import * as PepJS from  'pepjs/dist/pep';
+// import * as myScriptMath from '../../../bower_components/webcomponentsjs/webcomponents-lite';
 
 @IonicPage()
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'page-my-script-canvas',
-  templateUrl: 'my-script-canvas.html'
-  // styleUrls: ['my-script-canvas.scss']
+  templateUrl: 'my-script-canvas.html',
+  styleUrls: ['my-script-canvas.scss']
 })
 export class MyScriptCanvasPage implements AfterViewInit {
-  @ViewChild("tref", {read: ElementRef}) domEditor: ElementRef;
+  @ViewChild("tref", {read: ElementRef}) 
+  domEditor: ElementRef;
   title = 'app';
   editor: any;
   ngAfterViewInit() : void {
     // your code
-     console.log(this.domEditor.nativeElement);
-     var editorElement = this.domEditor.nativeElement;
+    //  console.log(this.domEditor.nativeElement);
      const configuration = {
       recognitionParams: {
         type: 'MATH',
@@ -37,13 +38,50 @@ export class MyScriptCanvasPage implements AfterViewInit {
         }
       }
     };
+        
+    this.editor = MyScriptJS.register(this.domEditor.nativeElement,configuration);
+    // this.editor = MyScriptJS.register(editorElement,configuration);
 
-    
-    this.editor = MyScriptJS.register(editorElement,configuration);
 
-    window.addEventListener('resize', function () {
-      editorElement.editor.resize();
-    });
+
+
+    // window.addEventListener('load', () => {
+      
+        //       const mathElement = document.querySelector('myscript-math-web');
+        //       console.log('All resources finished loading! Starting to init myscript-math-web');
+        //       // Please change applicationkey and hmackey below with those send by mail during your registration. You can re-access them by connecting to your dashboard at developer.myscript.com with your myscript account
+        //       const configuration = {
+        //           scheme: 'https',
+        //           host: 'webdemoapi.myscript.com',
+        //           applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+        //           hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+        //       };
+        //       // Testing if attributes binding via DOM, setAttribute or direct object manipulation is working.
+        //       mathElement.setAttribute('scheme', configuration.scheme);
+        //       mathElement.setAttribute('host', configuration.host);
+        //       mathElement.applicationkey = configuration.applicationKey;
+        //       mathElement.hmackey = configuration.hmacKey;
+        //       // Testing if options are taken into account
+        //       mathElement.configuration = {
+        //           recognitionParams: {
+        //               timestampFloatPrecision: 2,
+        //               v4: {
+        //                   export: {
+        //                       jiix: {
+        //                           'bounding-box': true,
+        //                           'strokes': true
+        //                       }
+        //                   }
+        //               }
+        //           }
+        //       };
+        //       mathElement.mimetypes = ['application/vnd.myscript.jiix'];
+        //       mathElement.unloaded = false;
+        //   });
+
+    // window.addEventListener('resize', function () {
+    //   editorElement.editor.resize();
+    // });
 
     // var editorElement: any = document.getElementById('editor');
     // var resultElement: any = document.getElementById('result');

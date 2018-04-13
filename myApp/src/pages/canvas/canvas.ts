@@ -69,6 +69,7 @@ export class CanvasPage {
 
     this.lastX = ev.touches[0].pageX;
     this.lastY = ev.touches[0].pageY;
+    
   }
 
   handleMove(ev){
