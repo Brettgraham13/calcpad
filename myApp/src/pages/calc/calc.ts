@@ -21,7 +21,7 @@ export class CalcPage {
   //    feel like the calculator is broken
   // Add ionic object that lets you have a cursor on the text box. 
 
-  screen = "";
+  screen = "2^(4)+2^(4)";
   error = "Unknown Error"
   //Global flag to keep track of whether the string should be updated at the end
   globalFlag = true;
@@ -60,7 +60,12 @@ export class CalcPage {
 
   copyToDisplay = function(input: any) {
     if(!this.screenIsInfinity(this.screen)){
-      this.screen = this.screen += input;
+      if(this.screen.charAt(this.screen.length - 1) == "*" && input == "*"){
+          this.screen = this.screen.substring(0,this.screen.length - 1) + "^(";
+      }
+      else{
+        this.screen = this.screen += input;
+      }
     }
     else{
       this.error = "The value is Infinity. Please clear the screen before making any additional inputs.";
@@ -156,13 +161,30 @@ export class CalcPage {
       return(false);
     }
 
+    if(this.anythingButParAfterCarrot(str)){
+      this.error = "Something other than an open parenthesis after ^.";
+      this.presentAlert();
+      return(false);
+    }
+
 
     return(true);
 
   }
 
+  anythingButParAfterCarrot = function(str){
+    for(var i = 0; i < str.length; i++){
+      if(str.charAt(i) == '^'){
+        if(str.charAt(i+1) != '('){
+          return(true);
+        }
+      }
+    }
+    return(false);
+  }
+
   operationsAfterMinus = function(str){
-    var ops = ['*', '+', '/']
+    var ops = ['*', '+', '/', '^']
     for(var i = 0; i < str.length-1; i++){
       if(str.charAt(i) == '-'){
         if(ops.some(x=>x===str.charAt(i+1))){
@@ -193,7 +215,7 @@ export class CalcPage {
   }
 
   startsWithOperation = function(str){
-    var operations = ["+", "*", "/", 'e'];
+    var operations = ["+", "*", "/", 'e', '^'];
     if(operations.indexOf(str.charAt(0)) != -1){
       return(true);
     }
@@ -201,7 +223,7 @@ export class CalcPage {
   }
 
   endsWithOperation = function(str){
-    var operations = ["+", "-", "*", "/", 'e'];
+    var operations = ["+", "-", "*", "/", 'e', '^'];
     if(operations.indexOf(str.charAt(str.length-1)) != -1){
       return(true);
     }
@@ -300,7 +322,7 @@ export class CalcPage {
   
   indicesOfOperations(str){
     var i = 0;
-    var operations: string[] = ["/", "+", "-", "*"];
+    var operations: string[] = ["/", "+", "-", "*", '^'];
     var indices = [];
     for(i ; i < str.length; i++){
       if(str.charAt(i) == "e"){
@@ -425,12 +447,12 @@ export class CalcPage {
     var numChar = str.length;
 
     while(i < numChar - 1){
-      if(str.charAt(i) == "(" && (str.charAt(i-1) != "*" && str.charAt(i-1) != "/" && str.charAt(i-1) != "+" && str.charAt(i-1) != "-" && str.charAt(i-1) != "(")){
+      if(str.charAt(i) == "(" && (str.charAt(i-1) != "*" && str.charAt(i-1) != "/" && str.charAt(i-1) != "+" && str.charAt(i-1) != "-" && str.charAt(i-1) != "(") && str.charAt(i-1) != '^'){
         // update string with a "*" at index i
         str = str.substring(0, i) + "*" + str.substring(i);
         i++;
       }
-      if(str.charAt(i) == ")" && (str.charAt(i+1) != "*" && str.charAt(i+1) != "/" && str.charAt(i+1) != "+" && str.charAt(i+1) != "-" && str.charAt(i+1) != ")")){
+      if(str.charAt(i) == ")" && (str.charAt(i+1) != "*" && str.charAt(i+1) != "/" && str.charAt(i+1) != "+" && str.charAt(i+1) != "-" && str.charAt(i+1) != ")"&& str.charAt(i-1) != '^')){
         // update string with a "*" at index i+1
         str = str.substring(0, i+1) + "*" + str.substring(i+1);
         i++;
@@ -466,13 +488,38 @@ export class CalcPage {
       return this.stringToMath(newStr);
     }
 
-
     //If there are no operations to be done, just return the string as a number
     if(indices.length == 0){
       return(Number(str));
     }
 
     var nums = this.grabNumbers(str, indices);
+
+    //Very careful string handling for exponents
+    while(str.indexOf('^') != -1){
+      var carInd = str.indexOf("^");
+      //indices updated from scratch for multiple carrots in one string, could maybe do this more efficiently but idk seems hard.
+      //Could also add a flag so this isn't done the first time through... Also the way the logic works only carrot indices really need to be updated I think
+      indices = this.indicesOfOperations(str);
+      var car_ind_num = indices.indexOf(carInd);
+      var expVal = Math.pow(nums[car_ind_num], nums[car_ind_num + 1]);
+      indices.pop(car_ind_num);
+
+      var len_num1 = nums[car_ind_num].toString().length;
+      var len_num2 = nums[car_ind_num + 1].toString().length;
+
+      //Fix the string with the computed exponent
+      if(car_ind_num == 0){
+        str = expVal.toString() + str.substring(len_num1+len_num2 + 1, str.length)
+      }
+      else{
+        str = str.substring(0, carInd - len_num1) + expVal.toString() + str.substring(carInd + len_num2 + 1, str.length)
+      }
+      //Fix the list of numbers with the new computation
+      //Removes the two necessary numbers and inserts the correct value
+      nums.splice(car_ind_num, 2, expVal);  
+  
+    }
 
     //Speed up but doesn't seem very important
     //If the only operations are multiplication and division and we didn't divide by zero just return the val
@@ -675,6 +722,51 @@ export class CalcPage {
     // Test parentheses
     testStr = "((8))";
     ans = 8;
+    this.testStringToMath(testStr, ans)
+
+    //Test exponents
+    testStr = "2^(3)"
+    ans = 8;
+    this.testStringToMath(testStr, ans)
+    
+    //Test exponents
+    testStr = "2^(3)+3"
+    ans = 11;
+    this.testStringToMath(testStr, ans)
+
+    //Test exponents
+    testStr = "3+2^(3)+3"
+    ans = 14;
+    this.testStringToMath(testStr, ans)
+
+    //Test exponents
+    testStr = "2^(2^2)"
+    ans = 16;
+    this.testStringToMath(testStr, ans)
+
+    //Test exponents
+    testStr = "2^(2^2-1)"
+    ans = 8;
+    this.testStringToMath(testStr, ans)
+
+    //Test exponents
+    testStr = "4^(.5)"
+    ans = 2;
+    this.testStringToMath(testStr, ans)
+
+    //Test exponents
+    testStr = "2^(-1)"
+    ans = 0.5;
+    this.testStringToMath(testStr, ans)
+
+    //Test exponents
+    testStr = "2^(2)*9"
+    ans = 36;
+    this.testStringToMath(testStr, ans)
+
+    //Test exponents
+    testStr = "2^(4)+2^(4)"
+    ans = 32;
     this.testStringToMath(testStr, ans)
 
   }
