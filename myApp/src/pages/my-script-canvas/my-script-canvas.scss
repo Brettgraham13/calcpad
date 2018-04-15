@@ -1,9 +1,7 @@
 page-my-script-canvas {
-    @import '~myscript/dist/myscript.min.css';
+    @import "../../../node_modules/myscript/dist/myscript.min";
 
-    #editor {
-    min-width: 500px;
-    max-width: 500px;
-}
-    
+    .editor {
+        height: 100vh;
+    } 
 }
