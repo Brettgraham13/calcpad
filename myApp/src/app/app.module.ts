@@ -11,7 +11,7 @@ import { MyScriptCanvasPage } from '../pages/my-script-canvas/my-script-canvas';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { CanvasPage } from '../pages/canvas/canvas';
+// import { CanvasPage } from '../pages/canvas/canvas';
 
 
 @NgModule({
@@ -20,7 +20,7 @@ import { CanvasPage } from '../pages/canvas/canvas';
     AboutPage,
     ContactPage,
     CalcPage,
-    CanvasPage,
+    // CanvasPage,
     TabsPage,
     MyScriptCanvasPage
   ],
@@ -33,7 +33,7 @@ import { CanvasPage } from '../pages/canvas/canvas';
     MyApp,
     AboutPage,
     ContactPage,
-    CanvasPage,
+    // CanvasPage,
     CalcPage,
     TabsPage,
     MyScriptCanvasPage

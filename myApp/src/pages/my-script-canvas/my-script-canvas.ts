@@ -19,7 +19,7 @@ export class MyScriptCanvasPage {
   ngAfterViewInit() {
       MyScriptJS.register(this.editor.nativeElement, {
       recognitionParams: {
-        type: 'TEXT',
+        type: 'MATH',
         protocol: 'WEBSOCKET',
         apiVersion: 'V4',
         server: {

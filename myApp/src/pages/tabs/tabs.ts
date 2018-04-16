@@ -14,7 +14,7 @@ export class TabsPage {
   tab1Root = CalcPage;
   tab2Root = AboutPage;
   tab3Root = ContactPage;
-  tab4Root = CanvasPage;
+  // tab4Root = CanvasPage;
   tab5Root = MyScriptCanvasPage;
 
   constructor() {
