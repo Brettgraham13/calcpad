@@ -112,10 +112,31 @@ export class CalcPage {
     // parentheses issues
     if(this.tooManyClosePar(str)){
       //Throw an error message!
-      this.error = "Your expression has an issue with the number of either open or close parentheses.";
+      this.error = "Your expression has an issue with the having more closed parentheses than open.";
       this.presentAlert();
       return(false);
     }
+
+    if(this.tooManyOpenPar(str)){
+      var numParen = this.numberPar(str);
+      var numExtra = numParen[0]-numParen[1];
+      var extraParen = ""
+      for(var i =0; i<numExtra; i++){
+        extraParen += ")";
+      }
+
+      this.screen += extraParen;
+      // while(this.tooManyOpenPar(str)){
+      //   this.screen = this.screen + ")";
+      // }
+    }
+
+    // if(this.tooManyOpenPar(str)){
+    //   //Throw an error message!
+    //   this.error = "Your expression has an issue with the having more open parentheses than close.";
+    //   this.presentAlert();
+    //   return(false);
+    // }
 
     // operation immediately after open or before close parentheses
     if(this.badOperationInParentheses(str)){
@@ -246,23 +267,61 @@ export class CalcPage {
     return(false);
   }
 
-  tooManyClosePar = function(str){
+
+  numberPar = function(str){
     var numOpen = 0;
     var numClose = 0;
     for(var i = 0; i < str.length; i++){
-        if(str.charAt(i) == "("){
-          numOpen++;
-        }
-        if(str.charAt(i) == ")"){
-          numClose++;
-        }
-        if(numClose > numOpen){
-          return(true);
-        }
+      if(str.charAt(i) == "("){
+        numOpen++;
+      }
+      if(str.charAt(i) == ")"){
+        numClose++;
+      }
     }
-    if(numOpen > numClose){return(true)};
+    return([numOpen,numClose]);
+  }
+
+  tooManyOpenPar = function(str){
+    var numPar = this.numberPar(str);
+    var openPar = numPar[0];
+    var closePar = numPar[1];
+
+    if (openPar > closePar){
+      return(true);
+    }
     return(false);
   }
+
+  tooManyClosePar = function(str){
+    var numPar = this.numberPar(str);
+    var openPar = numPar[0];
+    var closePar = numPar[1];
+
+    if (closePar > openPar){
+      return(true);
+    }
+    return(false);
+  }
+
+
+  // tooManyClosePar = function(str){
+  //   var numOpen = 0;
+  //   var numClose = 0;
+  //   for(var i = 0; i < str.length; i++){
+  //       if(str.charAt(i) == "("){
+  //         numOpen++;
+  //       }
+  //       if(str.charAt(i) == ")"){
+  //         numClose++;
+  //       }
+  //       if(numClose > numOpen){
+  //         return(true);
+  //       }
+  //   }
+  //   if(numOpen > numClose){return(true)};
+  //   return(false);
+  // }
 
   badOperationInParentheses = function(str){
     for(var i = 0; i < str.length; i++){
