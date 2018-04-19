@@ -58,20 +58,77 @@ export class CalcPage {
     }
   }
 
+  checkInput = function(input: any, char1 : string, char2: string){
+    if(this.screen.charAt(this.screen.length - 1) == char1 && input == char2){
+      return(true);
+    } else {
+      return(false);
+    }
+  }
+
+  replaceInput = function(newChar: string){
+    this.screen = this.screen.substring(0,this.screen.length - 1) + newChar;
+  }
+
+  correctConsecutiveOperations = function(input: any){
+    
+    if(this.checkInput(input,"*","*")){
+      this.replaceInput("^(");
+    } else if (this.checkInput(input,"+","+")){
+      this.replaceInput("+");
+    } else if (this.checkInput(input,"+","-")){
+      this.replaceInput("-");
+    } else if (this.checkInput(input,"-","+")){
+      this.replaceInput("-");
+    } else if (this.checkInput(input,"-","-")){
+      this.replaceInput("+");
+    } else if (this.checkInput(input,"/","+")){
+      this.replaceInput("/");
+    } else if (this.checkInput(input,"*","+")){
+      this.replaceInput("*");
+    } else if (this.checkInput(input,"(","+")){
+      this.replaceInput("(");
+    } else if (this.checkInput(input,"+","*")){
+      this.replaceInput("*");
+    } else if (this.checkInput(input,"-","*")){
+      this.replaceInput("*");
+    } else if (this.checkInput(input,"+","/")){
+      this.replaceInput("/");
+    } else if (this.checkInput(input,"-","/")){
+      this.replaceInput("/");
+    } else if (this.checkInput(input,"/","/")){
+      this.replaceInput("/");
+    } else if (this.checkInput(input,"/","*")){
+      this.replaceInput("*");
+    } else {
+      this.screen = this.screen += input;
+    }
+  }
+
   copyToDisplay = function(input: any) {
     if(!this.screenIsInfinity(this.screen)){
-      if(this.screen.charAt(this.screen.length - 1) == "*" && input == "*"){
-          this.screen = this.screen.substring(0,this.screen.length - 1) + "^(";
-      }
-      else{
-        this.screen = this.screen += input;
-      }
+      this.correctConsecutiveOperations(input);
     }
     else{
       this.error = "The value is Infinity. Please clear the screen before making any additional inputs.";
       this.presentAlert();
     }
   }
+
+  // copyToDisplay = function(input: any) {
+  //   if(!this.screenIsInfinity(this.screen)){
+  //     if(this.screen.charAt(this.screen.length - 1) == "*" && input == "*"){
+  //         this.screen = this.screen.substring(0,this.screen.length - 1) + "^(";
+  //     } 
+  //     else {
+  //       this.screen = this.screen += input;
+  //     }
+  //   }
+  //   else{
+  //     this.error = "The value is Infinity. Please clear the screen before making any additional inputs.";
+  //     this.presentAlert();
+  //   }
+  // }
 
   clearDisplay = function() {
     this.screen = "";
