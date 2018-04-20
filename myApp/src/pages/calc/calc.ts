@@ -20,14 +20,11 @@ export class CalcPage {
   // Remember to highlight decision to allow the user to edit the result string and delete characters. More error handling to deal with, but makes sure the user doesn't
   //    feel like the calculator is broken
   // Add ionic object that lets you have a cursor on the text box. 
-  // Add functions for additional functionality?
-  // Issue with auto-close parentheses. They don't account for empty parentheses. 
 
   screen = "2^(4)+2^(4)";
   error = "Unknown Error"
   //Global flag to keep track of whether the string should be updated at the end
   globalFlag = true;
-  __MAX_LENGTH__ = 15;
 
   presentAlert() {
     let alert = this.alertCtrl.create({
@@ -69,14 +66,36 @@ export class CalcPage {
     }
   }
 
+  // previousWasOperation = function(){
+  //   var operations = ["*", "/","+","-","^"];
+
+  //   if(operations.indexOf(this.screen.charAt(this.screen.length - 1))>-1){
+  //     return(true);
+  //   } else {
+  //     return(false);
+  //   }
+  // }
+
+  // currentIsOperation  = function(input: any){
+  //   var operations = ["*", "/","+","-","^"];
+
+  //   if(operations.indexOf(input)>-1){
+  //     return(true);
+  //   } else {
+  //     return(false);
+  //   }
+  // }
+
   replaceInput = function(newChar: string){
     this.screen = this.screen.substring(0,this.screen.length - 1) + newChar;
   }
 
   correctConsecutiveOperations = function(input: any){
+    var operationsMinusMinus = ["*","/","+","^"]
     
     if(this.checkInput(input,"*","*")){
       this.replaceInput("^(");
+
     } else if (this.checkInput(input,"+","+")){
       this.replaceInput("+");
     } else if (this.checkInput(input,"+","-")){
@@ -110,13 +129,7 @@ export class CalcPage {
 
   copyToDisplay = function(input: any) {
     if(!this.screenIsInfinity(this.screen)){
-      if(this.screen.length <= this.__MAX_LENGTH__){
-        this.correctConsecutiveOperations(input);
-      }
-      else{
-        this.error = "Maximum string length exceeded."
-        this.presentAlert();
-      }
+      this.correctConsecutiveOperations(input);
     }
     else{
       this.error = "The value is Infinity. Please clear the screen before making any additional inputs.";
@@ -190,11 +203,7 @@ export class CalcPage {
       for(var i =0; i<numExtra; i++){
         extraParen += ")";
       }
-
       this.screen += extraParen;
-      // while(this.tooManyOpenPar(str)){
-      //   this.screen = this.screen + ")";
-      // }
     }
 
     // if(this.tooManyOpenPar(str)){
