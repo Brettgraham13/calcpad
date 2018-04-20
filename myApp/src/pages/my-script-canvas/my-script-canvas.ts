@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import {ElementRef, ViewChild} from '@angular/core';
 import * as MyScriptJS from 'myscript/dist/myscript.min.js';
+import { splitMatchedQueriesDsl } from '@angular/core/src/view/util';
 
 @Component({
   selector: 'page-my-script-canvas',
@@ -16,8 +17,28 @@ export class MyScriptCanvasPage {
 
   }
 
+  editorElement;
+
+  clear = function(){
+    this.editorElement.clear();
+  }
+
+  undo = function(){
+    this.editorElement.undo();
+  }
+
+  redo = function(){
+    this.editorElement.redo();
+  }
+
+  convert = function(){
+    this.editorElement.convert();
+  }
+      
+  
+
   ngAfterViewInit() {
-      MyScriptJS.register(this.editor.nativeElement, {
+      this.editorElement = MyScriptJS.register(this.editor.nativeElement, {
       recognitionParams: {
         type: 'MATH',
         protocol: 'WEBSOCKET',
