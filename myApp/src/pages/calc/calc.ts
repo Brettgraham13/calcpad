@@ -25,11 +25,8 @@ export class CalcPage {
   error = "Unknown Error"
   //Global flag to keep track of whether the string should be updated at the end
   globalFlag = true;
-<<<<<<< HEAD
   __MAX_LENGTH__ = 19;
   edit = "";
-=======
->>>>>>> 055696bbf2b3413f59a15efdb944abc6dd686a10
 
   presentAlert() {
     let alert = this.alertCtrl.create({
