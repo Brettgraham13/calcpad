@@ -20,15 +20,16 @@ export class CalcPage {
   // Remember to highlight decision to allow the user to edit the result string and delete characters. More error handling to deal with, but makes sure the user doesn't
   //    feel like the calculator is broken
   // Add ionic object that lets you have a cursor on the text box. 
-  // Add functions for additional functionality?
-  // Issue with auto-close parentheses. They don't account for empty parentheses. 
 
   screen = "";
   error = "Unknown Error"
   //Global flag to keep track of whether the string should be updated at the end
   globalFlag = true;
+<<<<<<< HEAD
   __MAX_LENGTH__ = 19;
   edit = "";
+=======
+>>>>>>> 055696bbf2b3413f59a15efdb944abc6dd686a10
 
   presentAlert() {
     let alert = this.alertCtrl.create({
@@ -95,14 +96,36 @@ export class CalcPage {
     }
   }
 
+  // previousWasOperation = function(){
+  //   var operations = ["*", "/","+","-","^"];
+
+  //   if(operations.indexOf(this.screen.charAt(this.screen.length - 1))>-1){
+  //     return(true);
+  //   } else {
+  //     return(false);
+  //   }
+  // }
+
+  // currentIsOperation  = function(input: any){
+  //   var operations = ["*", "/","+","-","^"];
+
+  //   if(operations.indexOf(input)>-1){
+  //     return(true);
+  //   } else {
+  //     return(false);
+  //   }
+  // }
+
   replaceInput = function(newChar: string){
     this.screen = this.screen.substring(0,this.screen.length - 1) + newChar;
   }
 
   correctConsecutiveOperations = function(input: any){
+    var operationsMinusMinus = ["*","/","+","^"]
     
     if(this.checkInput(input,"*","*")){
       this.replaceInput("^(");
+<<<<<<< HEAD
     // } else if (this.checkInput(input,"+","+")){
     //   this.replaceInput("+");
     // } else if (this.checkInput(input,"+","-")){
@@ -129,6 +152,35 @@ export class CalcPage {
     //   this.replaceInput("/");
     // } else if (this.checkInput(input,"/","*")){
     //   this.replaceInput("*");
+=======
+
+    } else if (this.checkInput(input,"+","+")){
+      this.replaceInput("+");
+    } else if (this.checkInput(input,"+","-")){
+      this.replaceInput("-");
+    } else if (this.checkInput(input,"-","+")){
+      this.replaceInput("-");
+    } else if (this.checkInput(input,"-","-")){
+      this.replaceInput("+");
+    } else if (this.checkInput(input,"/","+")){
+      this.replaceInput("/");
+    } else if (this.checkInput(input,"*","+")){
+      this.replaceInput("*");
+    } else if (this.checkInput(input,"(","+")){
+      this.replaceInput("(");
+    } else if (this.checkInput(input,"+","*")){
+      this.replaceInput("*");
+    } else if (this.checkInput(input,"-","*")){
+      this.replaceInput("*");
+    } else if (this.checkInput(input,"+","/")){
+      this.replaceInput("/");
+    } else if (this.checkInput(input,"-","/")){
+      this.replaceInput("/");
+    } else if (this.checkInput(input,"/","/")){
+      this.replaceInput("/");
+    } else if (this.checkInput(input,"/","*")){
+      this.replaceInput("*");
+>>>>>>> 055696bbf2b3413f59a15efdb944abc6dd686a10
     } else {
       this.screen = this.screen += input;
     }
@@ -136,6 +188,7 @@ export class CalcPage {
 
   copyToDisplay = function(input: any) {
     if(!this.screenIsInfinity(this.screen)){
+<<<<<<< HEAD
       if(this.screen.length <= this.__MAX_LENGTH__){
         this.correctConsecutiveOperations(input);
 
@@ -144,6 +197,9 @@ export class CalcPage {
         this.error = "Maximum length exceeded."
         this.presentAlert();
       }
+=======
+      this.correctConsecutiveOperations(input);
+>>>>>>> 055696bbf2b3413f59a15efdb944abc6dd686a10
     }
     else{
       this.error = "The value is Infinity. Please clear the screen before making any additional inputs.";
@@ -217,6 +273,7 @@ export class CalcPage {
       for(var i =0; i<numExtra; i++){
         extraParen += ")";
       }
+<<<<<<< HEAD
       this.edit = this.screen;
       this.screen += extraParen;
     
@@ -228,6 +285,9 @@ export class CalcPage {
       // while(this.tooManyOpenPar(str)){
       //   this.screen = this.screen + ")";
       // }
+=======
+      this.screen += extraParen;
+>>>>>>> 055696bbf2b3413f59a15efdb944abc6dd686a10
     }
 
     // if(this.tooManyOpenPar(str)){
