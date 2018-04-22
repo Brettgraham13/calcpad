@@ -96,32 +96,32 @@ export class CalcPage {
     if(this.checkInput(input,"*","*")){
       this.replaceInput("^(");
 
-    } else if (this.checkInput(input,"+","+")){
-      this.replaceInput("+");
-    } else if (this.checkInput(input,"+","-")){
-      this.replaceInput("-");
-    } else if (this.checkInput(input,"-","+")){
-      this.replaceInput("-");
-    } else if (this.checkInput(input,"-","-")){
-      this.replaceInput("+");
-    } else if (this.checkInput(input,"/","+")){
-      this.replaceInput("/");
-    } else if (this.checkInput(input,"*","+")){
-      this.replaceInput("*");
-    } else if (this.checkInput(input,"(","+")){
-      this.replaceInput("(");
-    } else if (this.checkInput(input,"+","*")){
-      this.replaceInput("*");
-    } else if (this.checkInput(input,"-","*")){
-      this.replaceInput("*");
-    } else if (this.checkInput(input,"+","/")){
-      this.replaceInput("/");
-    } else if (this.checkInput(input,"-","/")){
-      this.replaceInput("/");
-    } else if (this.checkInput(input,"/","/")){
-      this.replaceInput("/");
-    } else if (this.checkInput(input,"/","*")){
-      this.replaceInput("*");
+    // } else if (this.checkInput(input,"+","+")){
+    //   this.replaceInput("+");
+    // } else if (this.checkInput(input,"+","-")){
+    //   this.replaceInput("-");
+    // } else if (this.checkInput(input,"-","+")){
+    //   this.replaceInput("-");
+    // } else if (this.checkInput(input,"-","-")){
+    //   this.replaceInput("+");
+    // } else if (this.checkInput(input,"/","+")){
+    //   this.replaceInput("/");
+    // } else if (this.checkInput(input,"*","+")){
+    //   this.replaceInput("*");
+    // } else if (this.checkInput(input,"(","+")){
+    //   this.replaceInput("(");
+    // } else if (this.checkInput(input,"+","*")){
+    //   this.replaceInput("*");
+    // } else if (this.checkInput(input,"-","*")){
+    //   this.replaceInput("*");
+    // } else if (this.checkInput(input,"+","/")){
+    //   this.replaceInput("/");
+    // } else if (this.checkInput(input,"-","/")){
+    //   this.replaceInput("/");
+    // } else if (this.checkInput(input,"/","/")){
+    //   this.replaceInput("/");
+    // } else if (this.checkInput(input,"/","*")){
+    //   this.replaceInput("*");
     } else {
       this.screen = this.screen += input;
     }
@@ -130,6 +130,17 @@ export class CalcPage {
   copyToDisplay = function(input: any) {
     if(!this.screenIsInfinity(this.screen)){
       this.correctConsecutiveOperations(input);
+    }
+    else{
+      this.error = "The value is Infinity. Please clear the screen before making any additional inputs.";
+      this.presentAlert();
+    }
+  }
+
+  deleteCharacter = function(){
+    if(!this.screenIsInfinity(this.screen)){
+      this.screen = this.screen.substring(0,this.screen.length - 1);
+      // this.correctConsecutiveOperations(input);
     }
     else{
       this.error = "The value is Infinity. Please clear the screen before making any additional inputs.";

@@ -10,6 +10,8 @@
 
         <div class="display" (swipe) = "swipe($event)" padding> {{screen}} </div>
 
+        <div class = "deleteButton" ion-button (click)="deleteCharacter()" padding> < </div>
+
         <button ion-button (click)="clearDisplay()" large> c </button>
 
         <button ion-button (click)="copyToDisplay('(')" large> (</button>

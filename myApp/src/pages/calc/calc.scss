@@ -12,15 +12,31 @@ page-calc {
 
 
     .display {
-        // width: 100%;
-        width: 300px;
+        width: 78%;
+        // width: 300px;
         height: 12%;
 
         background: whitesmoke;
         color: black;
         font-size: 1.7em;
         font-family: sans-serif;
-        border-radius: 5px;
+        border-radius: 1px;
+
+    }
+
+    .deleteButton {
+        width: 20%;
+        height: 12%;
+
+        background: whitesmoke;
+        color: grey;
+        // border-radius: 20px;
+        // transition-duration: 0.1s;
+        // font-size: 2em;
+        // font-family: sans-serif;
+        font-size: 1.7em;
+        font-family: sans-serif;
+        border-radius: 0px;
 
     }
 
