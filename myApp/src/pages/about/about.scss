@@ -1,7 +1,10 @@
 page-about {
+
     p {
-        font-size: 1.3em;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        text-align: center
+    }
+
+    h2 {
         text-align: center
     }
 
@@ -14,29 +17,18 @@ page-about {
         box-shadow: 5px lightgrey;
     }
 
-    .step {
-        font-size: 1.6em;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-        text-align: center;
-
-        width: 100%;
-        height: 30px;
-        background: lightskyblue;
-        border-radius: 10px;
-        margin: 10px 0px 10px 0px;
-
+    ion-slides {
+        height: initial;
     }
 
-    .type {
-        font-size: 2em;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-        text-align: center;
+    #logo {
+        width: 55%;
+        height: 55%;
+    }
 
-        width: 100%;
-        height: 40px;
-        background: thistle;
-        border-radius: 10px;
-        margin: 10px 0px 10px 0px;
+    #equations {
+        width: 35%;
+        height: 35%;
     }
 
 }
