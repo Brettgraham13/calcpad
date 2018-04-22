@@ -21,10 +21,15 @@ export class CalcPage {
   //    feel like the calculator is broken
   // Add ionic object that lets you have a cursor on the text box. 
 
-  screen = "2^(4)+2^(4)";
+  screen = "";
   error = "Unknown Error"
   //Global flag to keep track of whether the string should be updated at the end
   globalFlag = true;
+<<<<<<< HEAD
+  __MAX_LENGTH__ = 19;
+  edit = "";
+=======
+>>>>>>> 055696bbf2b3413f59a15efdb944abc6dd686a10
 
   presentAlert() {
     let alert = this.alertCtrl.create({
@@ -35,15 +40,41 @@ export class CalcPage {
     alert.present();
   }
 
+  presentConfirm() {
+    let alert = this.alertCtrl.create({
+      title: 'Did you mean to input this?',
+      message: this.screen,
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            this.screen = this.edit;
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
   //Swipe the display to delete the last character from the string
   swipe = function($e){
     if(this.screen.length != 0){
       if($e.offsetDirection == 2){
-        this.screen = this.screen.substring(0, this.screen.length-1);
+        if(this.screenIsInfinity(this.screen)){
+          this.screen = this.screen.substring(0, this.screen.length-1);
+        }
       }
       else if($e.offsetDirection == 4){
         // Swiped right
-        this.screen = this.screen.substring(1);
+        if(this.screenIsInfinity(this.screen)){        
+          this.screen = this.screen.substring(1);
+        }
       }
     }
   }
@@ -51,8 +82,7 @@ export class CalcPage {
 
   compute = function(){
     //REMOVE THIS GET BETTER WAY TO TEST
-    this.testingCalls();
-
+    // this.testingCalls();
     if(this.validString(this.screen)){
       this.screen = this.stringToMath(this.screen).toString();
     }
@@ -95,7 +125,6 @@ export class CalcPage {
     
     if(this.checkInput(input,"*","*")){
       this.replaceInput("^(");
-
     // } else if (this.checkInput(input,"+","+")){
     //   this.replaceInput("+");
     // } else if (this.checkInput(input,"+","-")){
@@ -202,7 +231,7 @@ export class CalcPage {
     // parentheses issues
     if(this.tooManyClosePar(str)){
       //Throw an error message!
-      this.error = "Your expression has an issue with the having more closed parentheses than open.";
+      this.error = "Your expression has more closed parentheses than open.";
       this.presentAlert();
       return(false);
     }
