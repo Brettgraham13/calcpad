@@ -23,11 +23,12 @@ export class CalcPage {
   // Add functions for additional functionality?
   // Issue with auto-close parentheses. They don't account for empty parentheses. 
 
-  screen = "2^(4)+2^(4)";
+  screen = "";
   error = "Unknown Error"
   //Global flag to keep track of whether the string should be updated at the end
   globalFlag = true;
-  __MAX_LENGTH__ = 15;
+  __MAX_LENGTH__ = 19;
+  edit = "";
 
   presentAlert() {
     let alert = this.alertCtrl.create({
@@ -38,15 +39,41 @@ export class CalcPage {
     alert.present();
   }
 
+  presentConfirm() {
+    let alert = this.alertCtrl.create({
+      title: 'Did you mean to input this?',
+      message: this.screen,
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            this.screen = this.edit;
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
   //Swipe the display to delete the last character from the string
   swipe = function($e){
     if(this.screen.length != 0){
       if($e.offsetDirection == 2){
-        this.screen = this.screen.substring(0, this.screen.length-1);
+        if(this.screenIsInfinity(this.screen)){
+          this.screen = this.screen.substring(0, this.screen.length-1);
+        }
       }
       else if($e.offsetDirection == 4){
         // Swiped right
-        this.screen = this.screen.substring(1);
+        if(this.screenIsInfinity(this.screen)){        
+          this.screen = this.screen.substring(1);
+        }
       }
     }
   }
@@ -54,8 +81,7 @@ export class CalcPage {
 
   compute = function(){
     //REMOVE THIS GET BETTER WAY TO TEST
-    this.testingCalls();
-
+    // this.testingCalls();
     if(this.validString(this.screen)){
       this.screen = this.stringToMath(this.screen).toString();
     }
@@ -77,32 +103,32 @@ export class CalcPage {
     
     if(this.checkInput(input,"*","*")){
       this.replaceInput("^(");
-    } else if (this.checkInput(input,"+","+")){
-      this.replaceInput("+");
-    } else if (this.checkInput(input,"+","-")){
-      this.replaceInput("-");
-    } else if (this.checkInput(input,"-","+")){
-      this.replaceInput("-");
-    } else if (this.checkInput(input,"-","-")){
-      this.replaceInput("+");
-    } else if (this.checkInput(input,"/","+")){
-      this.replaceInput("/");
-    } else if (this.checkInput(input,"*","+")){
-      this.replaceInput("*");
-    } else if (this.checkInput(input,"(","+")){
-      this.replaceInput("(");
-    } else if (this.checkInput(input,"+","*")){
-      this.replaceInput("*");
-    } else if (this.checkInput(input,"-","*")){
-      this.replaceInput("*");
-    } else if (this.checkInput(input,"+","/")){
-      this.replaceInput("/");
-    } else if (this.checkInput(input,"-","/")){
-      this.replaceInput("/");
-    } else if (this.checkInput(input,"/","/")){
-      this.replaceInput("/");
-    } else if (this.checkInput(input,"/","*")){
-      this.replaceInput("*");
+    // } else if (this.checkInput(input,"+","+")){
+    //   this.replaceInput("+");
+    // } else if (this.checkInput(input,"+","-")){
+    //   this.replaceInput("-");
+    // } else if (this.checkInput(input,"-","+")){
+    //   this.replaceInput("-");
+    // } else if (this.checkInput(input,"-","-")){
+    //   this.replaceInput("+");
+    // } else if (this.checkInput(input,"/","+")){
+    //   this.replaceInput("/");
+    // } else if (this.checkInput(input,"*","+")){
+    //   this.replaceInput("*");
+    // } else if (this.checkInput(input,"(","+")){
+    //   this.replaceInput("(");
+    // } else if (this.checkInput(input,"+","*")){
+    //   this.replaceInput("*");
+    // } else if (this.checkInput(input,"-","*")){
+    //   this.replaceInput("*");
+    // } else if (this.checkInput(input,"+","/")){
+    //   this.replaceInput("/");
+    // } else if (this.checkInput(input,"-","/")){
+    //   this.replaceInput("/");
+    // } else if (this.checkInput(input,"/","/")){
+    //   this.replaceInput("/");
+    // } else if (this.checkInput(input,"/","*")){
+    //   this.replaceInput("*");
     } else {
       this.screen = this.screen += input;
     }
@@ -112,9 +138,10 @@ export class CalcPage {
     if(!this.screenIsInfinity(this.screen)){
       if(this.screen.length <= this.__MAX_LENGTH__){
         this.correctConsecutiveOperations(input);
+
       }
       else{
-        this.error = "Maximum string length exceeded."
+        this.error = "Maximum length exceeded."
         this.presentAlert();
       }
     }
@@ -178,7 +205,7 @@ export class CalcPage {
     // parentheses issues
     if(this.tooManyClosePar(str)){
       //Throw an error message!
-      this.error = "Your expression has an issue with the having more closed parentheses than open.";
+      this.error = "Your expression has more closed parentheses than open.";
       this.presentAlert();
       return(false);
     }
@@ -190,8 +217,14 @@ export class CalcPage {
       for(var i =0; i<numExtra; i++){
         extraParen += ")";
       }
-
+      this.edit = this.screen;
       this.screen += extraParen;
+    
+      this.presentConfirm();
+      
+      // Have to return false here because the running thread won't stop and wait for this input :(
+      // return(false);
+
       // while(this.tooManyOpenPar(str)){
       //   this.screen = this.screen + ")";
       // }
