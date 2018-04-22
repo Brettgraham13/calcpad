@@ -1,0 +1,55 @@
+<ion-header>  
+  <ion-navbar>
+    <ion-title>
+        MyScript Canvas
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<div id="result"></div>
+    
+    <script>
+      
+      /**
+       * Attach an editor to the document
+       * @param {Element} The DOM element to attach the ink paper
+       * @param {Object} The recognition parameters
+       */
+      // MyScript.register(editorElement, {
+      //   recognitionParams: {
+      //     type: 'MATH',
+      //     protocol: 'WEBSOCKET',
+      //     apiVersion: 'V4',
+      //     server: {
+      //       scheme: 'https',
+      //       host: 'webdemoapi.myscript.com',
+      //       applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
+      //       hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
+      //     },
+      //     v4: {
+      //       math: {
+      //         mimeTypes: ['application/x-latex']
+      //       }
+      //     }
+      //   }
+      // });
+      // window.addEventListener('resize', function () {
+      //   editorElement.editor.resize();
+      // });
+    </script>
+
+
+
+
+<ion-content padding>
+    <div id = "container">
+
+    <button ion-button (click)="clear()" medium> c </button>
+    <button ion-button (click)="redo()" medium> r</button>
+    <button ion-button (click)="undo()" medium> u </button>
+    <button ion-button (click)="convert()" medium> v </button>
+
+    </div>
+
+  <div touch-action='none' class="editor" #editor></div>
+</ion-content>
