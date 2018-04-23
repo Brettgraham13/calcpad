@@ -16,10 +16,10 @@
 // automatically applied to the <body> element in the app.
 
 .toolbar-background {
-    background-image: linear-gradient(to bottom, color($colors,gradient-light) 0%, color($colors,gradient-dark) 100%);
+    background-image: linear-gradient(to bottom, color($colors,gradient-light) 5%, color($colors,gradient-dark) 80%);
 }
 
 .button {
-    background-color: color($colors,gradient-dark);
+    // background-color: color($colors,gradient-dark);
     // background-image: linear-gradient(to bottom, color($colors,gradient-light) 0%, color($colors,gradient-dark) 100%);
 }

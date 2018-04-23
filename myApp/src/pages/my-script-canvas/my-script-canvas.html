@@ -6,48 +6,17 @@
   </ion-navbar>
 </ion-header>
 
-<div id="result"></div>
+<!-- <div id="result"></div>
     
-    <script>
-      
-      /**
-       * Attach an editor to the document
-       * @param {Element} The DOM element to attach the ink paper
-       * @param {Object} The recognition parameters
-       */
-      // MyScript.register(editorElement, {
-      //   recognitionParams: {
-      //     type: 'MATH',
-      //     protocol: 'WEBSOCKET',
-      //     apiVersion: 'V4',
-      //     server: {
-      //       scheme: 'https',
-      //       host: 'webdemoapi.myscript.com',
-      //       applicationKey: '515131ab-35fa-411c-bb4d-3917e00faf60',
-      //       hmacKey: '54b2ca8a-6752-469d-87dd-553bb450e9ad'
-      //     },
-      //     v4: {
-      //       math: {
-      //         mimeTypes: ['application/x-latex']
-      //       }
-      //     }
-      //   }
-      // });
-      // window.addEventListener('resize', function () {
-      //   editorElement.editor.resize();
-      // });
-    </script>
-
-
-
+ -->
 
 <ion-content padding>
     <div id = "container">
 
-    <button ion-button (click)="clear()" medium> <ion-icon name="trash"></ion-icon> </button>
-    <button ion-button (click)="undo()" medium> <ion-icon name="undo"></ion-icon> </button>
-    <button ion-button (click)="redo()" medium> <ion-icon name="redo"></ion-icon></button>
-    <button ion-button (click)="convert()" medium> <ion-icon name="calculator"></ion-icon> </button>
+    <button ion-button (click)="clear()" medium outline> <ion-icon name="trash"></ion-icon> </button>
+    <button ion-button (click)="undo()" medium outline> <ion-icon name="undo"></ion-icon> </button>
+    <button ion-button (click)="redo()" medium outline> <ion-icon name="redo"></ion-icon></button>
+    <button ion-button (click)="convert()" medium  outline id = "calc-button"> <ion-icon name="calculator"></ion-icon> </button>
 
     </div>
 

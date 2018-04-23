@@ -50,7 +50,10 @@ $toolbar-text-color: black;
 
 
 // $tabs-background: color($colors, gradient-dark);
-// $tabs-tab-color-active: color($colors, gradient-light);
+$tabs-tab-color-active: color($colors, gradient-dark);
+$button-ios-background-color: color($colors, gradient-dark);
+$button-md-background-color: color($colors, gradient-dark);
+$button-wp-background-color: color($colors, gradient-dark);
 
 // $button-height: 10%;
 
