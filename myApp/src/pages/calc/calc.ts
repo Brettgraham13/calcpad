@@ -58,20 +58,16 @@ export class CalcPage {
     });
     alert.present();
   }
-
+  
   //Swipe the display to delete the last character from the string
   swipe = function($e){
     if(this.screen.length != 0){
       if($e.offsetDirection == 2){
-        if(this.screenIsInfinity(this.screen)){
-          this.screen = this.screen.substring(0, this.screen.length-1);
-        }
+        this.screen = this.screen.substring(0, this.screen.length-1);
       }
       else if($e.offsetDirection == 4){
         // Swiped right
-        if(this.screenIsInfinity(this.screen)){        
-          this.screen = this.screen.substring(1);
-        }
+        this.screen = this.screen.substring(1);
       }
     }
   }
@@ -79,7 +75,8 @@ export class CalcPage {
 
   compute = function(){
     //REMOVE THIS GET BETTER WAY TO TEST
-    // this.testingCalls();
+    this.testingCalls();
+
     if(this.validString(this.screen)){
       this.screen = this.stringToMath(this.screen).toString();
     }
@@ -165,7 +162,7 @@ export class CalcPage {
 
   deleteCharacter = function(){
     if(!this.screenIsInfinity(this.screen)){
-      this.screen = this.screen.substring(0,this.screen.length - 1);
+      this.screen = this.screen.substring(0,this.screen.length -1)
       // this.correctConsecutiveOperations(input);
     }
     else{
@@ -228,19 +225,9 @@ export class CalcPage {
     // parentheses issues
     if(this.tooManyClosePar(str)){
       //Throw an error message!
-      this.error = "Your expression has more closed parentheses than open.";
+      this.error = "Your expression has an issue with the having more closed parentheses than open.";
       this.presentAlert();
       return(false);
-    }
-
-    if(this.tooManyOpenPar(str)){
-      var numParen = this.numberPar(str);
-      var numExtra = numParen[0]-numParen[1];
-      var extraParen = ""
-      for(var i =0; i<numExtra; i++){
-        extraParen += ")";
-      }
-      this.screen += extraParen;
     }
 
     // if(this.tooManyOpenPar(str)){
@@ -300,6 +287,18 @@ export class CalcPage {
       return(false);
     }
 
+    if(this.tooManyOpenPar(str)){
+      var numParen = this.numberPar(str);
+      var numExtra = numParen[0]-numParen[1];
+      var extraParen = ""
+      for(var i =0; i<numExtra; i++){
+        extraParen += ")";
+      }
+      this.edit = this.screen;
+      this.screen += extraParen;
+
+      this.presentConfirm();
+    }
 
     return(true);
 
