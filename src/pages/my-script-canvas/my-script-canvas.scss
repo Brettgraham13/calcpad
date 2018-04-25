@@ -1,7 +1,11 @@
 page-my-script-canvas {
     @import "../../../node_modules/myscript/dist/myscript.min";
 
+
+    overflow: hidden;
+
     .editor {
         height: 100vh;
     } 
+
 }

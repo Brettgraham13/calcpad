@@ -1,18 +1,22 @@
 page-contact {
 
-    .content {
-        //width: 400px;
-        padding: 20px;
-        //overflow: hidden;
+    p {
+        text-align: center
     }
-    
-    .content img {
-        border-radius: 50%;
-        margin-right: 15px;
-        float: left;
+
+    h2 {
+        text-align: center
     }
 
     img {
         border-radius: 50%;
+        width: 50%;
+        margin: auto;
+    }
+    
+    #logo {
+        border-radius: 0%;
+        width: 35%;
+        height: 35%;
     }
 }

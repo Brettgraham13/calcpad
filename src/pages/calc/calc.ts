@@ -21,10 +21,12 @@ export class CalcPage {
   //    feel like the calculator is broken
   // Add ionic object that lets you have a cursor on the text box. 
 
-  screen = "2^(4)+2^(4)";
+  screen = "";
   error = "Unknown Error"
   //Global flag to keep track of whether the string should be updated at the end
   globalFlag = true;
+  __MAX_LENGTH__ = 19;
+  edit = "";
 
   presentAlert() {
     let alert = this.alertCtrl.create({
@@ -35,6 +37,28 @@ export class CalcPage {
     alert.present();
   }
 
+  presentConfirm() {
+    let alert = this.alertCtrl.create({
+      title: 'Did you mean to input this?',
+      message: this.screen,
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            this.screen = this.edit;
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+  
   //Swipe the display to delete the last character from the string
   swipe = function($e){
     if(this.screen.length != 0){
@@ -95,33 +119,32 @@ export class CalcPage {
     
     if(this.checkInput(input,"*","*")){
       this.replaceInput("^(");
-
-    } else if (this.checkInput(input,"+","+")){
-      this.replaceInput("+");
-    } else if (this.checkInput(input,"+","-")){
-      this.replaceInput("-");
-    } else if (this.checkInput(input,"-","+")){
-      this.replaceInput("-");
-    } else if (this.checkInput(input,"-","-")){
-      this.replaceInput("+");
-    } else if (this.checkInput(input,"/","+")){
-      this.replaceInput("/");
-    } else if (this.checkInput(input,"*","+")){
-      this.replaceInput("*");
-    } else if (this.checkInput(input,"(","+")){
-      this.replaceInput("(");
-    } else if (this.checkInput(input,"+","*")){
-      this.replaceInput("*");
-    } else if (this.checkInput(input,"-","*")){
-      this.replaceInput("*");
-    } else if (this.checkInput(input,"+","/")){
-      this.replaceInput("/");
-    } else if (this.checkInput(input,"-","/")){
-      this.replaceInput("/");
-    } else if (this.checkInput(input,"/","/")){
-      this.replaceInput("/");
-    } else if (this.checkInput(input,"/","*")){
-      this.replaceInput("*");
+    // } else if (this.checkInput(input,"+","+")){
+    //   this.replaceInput("+");
+    // } else if (this.checkInput(input,"+","-")){
+    //   this.replaceInput("-");
+    // } else if (this.checkInput(input,"-","+")){
+    //   this.replaceInput("-");
+    // } else if (this.checkInput(input,"-","-")){
+    //   this.replaceInput("+");
+    // } else if (this.checkInput(input,"/","+")){
+    //   this.replaceInput("/");
+    // } else if (this.checkInput(input,"*","+")){
+    //   this.replaceInput("*");
+    // } else if (this.checkInput(input,"(","+")){
+    //   this.replaceInput("(");
+    // } else if (this.checkInput(input,"+","*")){
+    //   this.replaceInput("*");
+    // } else if (this.checkInput(input,"-","*")){
+    //   this.replaceInput("*");
+    // } else if (this.checkInput(input,"+","/")){
+    //   this.replaceInput("/");
+    // } else if (this.checkInput(input,"-","/")){
+    //   this.replaceInput("/");
+    // } else if (this.checkInput(input,"/","/")){
+    //   this.replaceInput("/");
+    // } else if (this.checkInput(input,"/","*")){
+    //   this.replaceInput("*");
     } else {
       this.screen = this.screen += input;
     }
@@ -130,6 +153,17 @@ export class CalcPage {
   copyToDisplay = function(input: any) {
     if(!this.screenIsInfinity(this.screen)){
       this.correctConsecutiveOperations(input);
+    }
+    else{
+      this.error = "The value is Infinity. Please clear the screen before making any additional inputs.";
+      this.presentAlert();
+    }
+  }
+
+  deleteCharacter = function(){
+    if(!this.screenIsInfinity(this.screen)){
+      this.screen = this.screen.substring(0,this.screen.length -1)
+      // this.correctConsecutiveOperations(input);
     }
     else{
       this.error = "The value is Infinity. Please clear the screen before making any additional inputs.";
@@ -196,16 +230,6 @@ export class CalcPage {
       return(false);
     }
 
-    if(this.tooManyOpenPar(str)){
-      var numParen = this.numberPar(str);
-      var numExtra = numParen[0]-numParen[1];
-      var extraParen = ""
-      for(var i =0; i<numExtra; i++){
-        extraParen += ")";
-      }
-      this.screen += extraParen;
-    }
-
     // if(this.tooManyOpenPar(str)){
     //   //Throw an error message!
     //   this.error = "Your expression has an issue with the having more open parentheses than close.";
@@ -263,6 +287,18 @@ export class CalcPage {
       return(false);
     }
 
+    if(this.tooManyOpenPar(str)){
+      var numParen = this.numberPar(str);
+      var numExtra = numParen[0]-numParen[1];
+      var extraParen = ""
+      for(var i =0; i<numExtra; i++){
+        extraParen += ")";
+      }
+      this.edit = this.screen;
+      this.screen += extraParen;
+
+      this.presentConfirm();
+    }
 
     return(true);
 
