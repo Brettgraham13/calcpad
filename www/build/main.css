@@ -31144,7 +31144,8 @@ page-my-script-canvas .added-stroke {
 }
 
 page-my-script-canvas .editor {
-  height: 100vh;
+  height: 100%;
+  overflow: hidden;
 }
 
 page-my-script-canvas #container {
