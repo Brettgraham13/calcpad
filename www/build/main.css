@@ -30603,6 +30603,10 @@ page-calc .display {
   border-radius: 1px;
 }
 
+page-calc .no-scroll .scroll-content {
+  overflow: hidden;
+}
+
 page-calc .deleteButton {
   width: 20%;
   height: 12%;
@@ -31166,4 +31170,8 @@ page-my-script-canvas #container {
 
 page-my-script-canvas button {
   width: 24%;
+}
+
+page-my-script-canvas .no-scroll .scroll-content {
+  overflow: hidden;
 }

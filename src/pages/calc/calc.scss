@@ -26,6 +26,12 @@ page-calc {
 
     }
 
+    .no-scroll {
+        .scroll-content{
+            overflow: hidden;
+        }
+      }
+
     .deleteButton {
         width: 20%;
         height: 12%;

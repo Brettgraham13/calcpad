@@ -19,6 +19,12 @@ page-my-script-canvas {
         width: 24%;
     }
 
+    .no-scroll {
+        .scroll-content{
+            overflow: hidden;
+        }
+      }
+
     // #calc-button {
     //     font-size: 100%;
     // }
