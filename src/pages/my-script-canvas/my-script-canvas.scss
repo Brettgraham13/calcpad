@@ -5,7 +5,8 @@ page-my-script-canvas {
     overflow: hidden;
 
     .editor {
-        height: 100vh;
+        height: 100%;
+        overflow: hidden;
     } 
 
     #container {
@@ -18,7 +19,7 @@ page-my-script-canvas {
         width: 24%;
     }
 
-    #calc-button {
-        font-size: 180%;
-    }
+    // #calc-button {
+    //     font-size: 100%;
+    // }
 }
