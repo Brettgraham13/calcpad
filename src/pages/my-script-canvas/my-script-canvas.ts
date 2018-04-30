@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import {ElementRef, ViewChild} from '@angular/core';
 import * as MyScriptJS from 'myscript/dist/myscript.min.js';
-import { splitMatchedQueriesDsl } from '@angular/core/src/view/util';
+import * as config from './config.json';
+
+
 
 @Component({
   selector: 'page-my-script-canvas',
@@ -11,13 +13,16 @@ import { splitMatchedQueriesDsl } from '@angular/core/src/view/util';
 
 export class MyScriptCanvasPage {
 
-  @ViewChild('editor') editor: ElementRef;
-
+  @ViewChild('editor') 
+  editor: ElementRef;
+  
   constructor(public navCtrl: NavController) {
 
   }
-
+  appKey = config.applicationKey;
+  hmacKey = config.hmacKey;
   editorElement;
+
 
   clear = function(){
     this.editorElement.clear();
@@ -34,10 +39,9 @@ export class MyScriptCanvasPage {
   convert = function(){
     this.editorElement.convert();
   }
-      
-  
 
-  ngAfterViewInit() {
+
+  ngAfterViewInit() {    
       this.editorElement = MyScriptJS.register(this.editor.nativeElement, {
       recognitionParams: {
         type: 'MATH',
@@ -46,11 +50,12 @@ export class MyScriptCanvasPage {
         server: {
           scheme: 'https',
           host: 'webdemoapi.myscript.com',
-          applicationKey: '7498d8dc-55db-4f40-8a80-625de7e17bed',
-          hmacKey:  '2ef4521b-5697-4653-8f8f-defede0bac55',
+          applicationKey: this.appKey,
+          hmacKey: this.hmacKey,
         },
       },
     });
+    
   }
 }
 
