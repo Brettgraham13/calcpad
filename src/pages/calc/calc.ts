@@ -2,19 +2,16 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 
-@Component({
-selector: 'page-calc',
-templateUrl: 'calc.html'
-})
+    @Component({
+    selector: 'page-calc',
+    templateUrl: 'calc.html'
+    })
 
-export class CalcPage {
-
-constructor(public navCtrl: NavController, public alertCtrl: AlertController) {
-
-}
+    export class CalcPage {
+        constructor(public navCtrl: NavController, public alertCtrl: AlertController) {
+    }
 
 // NOTES: divide by zero is handled differently from all other errors. Maybe should be fixed up, but it might be difficult
-// Make decisions about how large of numbers we want to allow
 // I made it so that e is treated like an operation for error handling
 // Minus signs at the beginning of a string, right after another symbol indicate a negative number. 
 // Remember to highlight decision to allow the user to edit the result string and delete characters. More error handling to deal with, but makes sure the user doesn't
@@ -22,17 +19,18 @@ constructor(public navCtrl: NavController, public alertCtrl: AlertController) {
 // Add ionic object that lets you have a cursor on the text box. 
 
 screen = "";
+errorTitle_1 = "Invalid input"
 error = "Unknown Error"
 //Global flag to keep track of whether the string should be updated at the end
 globalFlag = true;
 __MAX_ACC_VAL__ = 2**31-1;
-__MAX_TRUE_VAL__ = 10**15;
+__MAX_TRUE_VAL__ = 10**15-1;
 __MAX_LENGTH__ = 13;
 edit = "";
 
 presentAlert() {
 let alert = this.alertCtrl.create({
-title: 'Invalid input',
+title: this.errorTitle_1,
 subTitle: this.error,
 buttons: ['Dismiss']
 });
@@ -73,18 +71,21 @@ alert.present();
 // }
 // }
 
-compute = function(){
-//REMOVE THIS GET BETTER WAY TO TEST
-// this.testingCalls();
+    compute = function(){
+        //REMOVE THIS GET BETTER WAY TO TEST
+        //this.testingCalls();
 
-if(this.validString(this.screen)){
-var tempAns = this.stringToMath(this.screen);
-if(tempAns >= this.__MAX_TRUE_VAL__){
-tempAns = Number.parseFloat(tempAns.toPrecision(8)).toExponential();
-}
-this.screen = tempAns.toString();
-}
-}
+        if(this.validString(this.screen)){
+         var tempAns = this.stringToMath(this.screen);
+            if(tempAns > this.__MAX_TRUE_VAL__){
+                tempAns = Number.parseFloat(tempAns.toPrecision(8)).toExponential();
+            }
+            // if(tempAns.indexOf('e') != -1){
+            //     this.screen = tempAns
+            // }
+            this.screen = tempAns.toString();
+            }
+        }
 
 checkInput = function(input: any, char1 : string, char2: string){
 if(this.screen.charAt(this.screen.length - 1) == char1 && input == char2){
@@ -160,11 +161,13 @@ this.correctConsecutiveOperations(input);
 }
 else{
 this.error = "Maximum string length exceeded. Please clear screen before making further calculations."
+this.errorTitle_1 = "Invalid Input"
 this.presentAlert();
 }
 }
 else{
 this.error = "The value is Infinity. Please clear the screen before making any additional inputs.";
+this.errorTitle_1 = "Invalid Input"
 this.presentAlert();
 }
 }
@@ -176,6 +179,7 @@ this.screen = this.screen.substring(0,this.screen.length -1)
 }
 else{
 this.error = "The value is Infinity. Please clear the screen before making any additional inputs.";
+this.errorTitle_1 = "Invalid Input"
 this.presentAlert();
 }
 }
@@ -211,6 +215,7 @@ return(false);
 if(this.twoSeqOperations(str)){
 //Throw an error message!
 this.error = "Your expression contains two sequential operations.";
+this.errorTitle_1 = "Invalid Input"
 this.presentAlert();
 return(false);
 }
@@ -219,6 +224,7 @@ return(false);
 if(this.startsWithOperation(str)){
 //Throw an error message!
 this.error = "Your expression begins with an operation.";
+this.errorTitle_1 = "Invalid Input"
 this.presentAlert();
 return(false);
 }
@@ -227,6 +233,7 @@ return(false);
 if(this.endsWithOperation(str)){
 //Throw an error message!
 this.error = "Your expression ends with an operation.";
+this.errorTitle_1 = "Invalid Input"
 this.presentAlert();
 return(false);
 }
@@ -235,6 +242,7 @@ return(false);
 if(this.tooManyClosePar(str)){
 //Throw an error message!
 this.error = "Your expression has an issue with the having more closed parentheses than open.";
+this.errorTitle_1 = "Invalid Input"
 this.presentAlert();
 return(false);
 }
@@ -250,6 +258,7 @@ return(false);
 if(this.badOperationInParentheses(str)){
 //Throw an error message
 this.error = "Your expression has an operation immediately after an open parenthesis or before a close parenthesis.";
+this.errorTitle_1 = "Invalid Input"
 this.presentAlert();
 return(false);
 }
@@ -258,6 +267,7 @@ return(false);
 if(this.tooManyDecimals(str)){
 //Throw an error message!
 this.error = "One of your numbers contains more than one periods. ";
+this.errorTitle_1 = "Invalid Input"
 this.presentAlert();
 return(false);
 }
@@ -266,6 +276,7 @@ return(false);
 if(this.emptyParentheses(str)){
 //Throw an error message!
 this.error = "The input contains and empty set of parentheses. ";
+this.errorTitle_1 = "Invalid Input"
 this.presentAlert();
 return(false);
 }
@@ -273,6 +284,7 @@ return(false);
 //really big numbers and people editing the string around e
 if(this.badEInput(str)){
 this.error = "Something went wrong around the character 'e'";
+this.errorTitle_1 = "Invalid Input"
 this.presentAlert();
 return(false);
 }
@@ -280,18 +292,21 @@ return(false);
 //Two sequential negatives
 if(this.twoSeqNegatives(str)){
 this.error = "Two or more consecutive '-'";
+this.errorTitle_1 = "Invalid Input"
 this.presentAlert();
 return(false);
 }
 
 if(this.operationsAfterMinus(str)){
 this.error = "Operation after minus sign.";
+this.errorTitle_1 = "Invalid Input"
 this.presentAlert();
 return(false);
 }
 
 if(this.anythingButParAfterCarrot(str)){
 this.error = "Something other than an open parenthesis after ^.";
+this.errorTitle_1 = "Invalid Input"
 this.presentAlert();
 return(false);
 }
@@ -538,6 +553,7 @@ return num1 * num2;
 if(operation == "/"){
 if(num2 == 0){
 this.error = "Divide by zero.";
+this.errorTitle_1 = "Invalid Input"
 this.presentAlert();
 this.globalFlag = false;
 }
@@ -643,107 +659,114 @@ numChar = str.length;
 return str;
 }
 
-stringToMath = function(str){
-//get the number of operations in the string
-var indices = this.indicesOfOperations(str);
+    stringToMath = function(str){
+        //get the number of operations in the string
+        var indices = this.indicesOfOperations(str);
 
-// console.log(str)
-//Insert implied multiplications (parentheses next to numbers without an operator)
-str = this.impliedMultiplications(str);
-// console.log(str)
+        // console.log(str)
+        //Insert implied multiplications (parentheses next to numbers without an operator)
+        str = this.impliedMultiplications(str);
+        // console.log(str)
 
-//Handle parentheses
-if(str.indexOf("(") != -1){
-var parInd = str.indexOf("(") + 1;
-var parEnd = this.getParClose(str);
-//console.log(str);
-var parVal = this.stringToMath(str.substring(parInd, parEnd));
-//Reupdate in case the string is very different from before
-parEnd = this.getParClose(str);
-var newStr = str.substring(0, parInd - 1) + String(parVal) + str.substring(parEnd+1);
-//console.log(newStr);
-return this.stringToMath(newStr);
-}
+        //Handle parentheses
+        if(str.indexOf("(") != -1){
+            var parInd = str.indexOf("(") + 1;
+            var parEnd = this.getParClose(str);
+            //console.log(str);
+            var parVal = this.stringToMath(str.substring(parInd, parEnd));
+            //Reupdate in case the string is very different from before
+            parEnd = this.getParClose(str);
+            var newStr = str.substring(0, parInd - 1) + String(parVal) + str.substring(parEnd+1);
+            //console.log(newStr);
+            return this.stringToMath(newStr);
+        }
 
-//If there are no operations to be done, just return the string as a number
-if(indices.length == 0){
-var temp = Number(str);
-if(temp < this.__MAX_ACC_VAL__){
-return(str);
-}
-else{
-this.error = "WARNING: Maximum accurate value exceeded. This is not a scientific calculator. This result may be rounded and unreliable."
-this.presentAlert();
-return(str);
-}
-}
+        //If there are no operations to be done, just return the string as a number
+        if(indices.length == 0 && str.indexOf('-') == -1){
+            var temp = Number(str);
+            if(temp < this.__MAX_ACC_VAL__){
+                return(temp);
+            }
+            else{
+                this.error = "WARNING: Maximum accurate value exceeded. This is not a scientific calculator. This result may be rounded and unreliable."
+                this.errorTitle_1 = "Warning"
+                this.presentAlert();
+                return(temp);
+            }
+        }
 
-var nums = this.grabNumbers(str, indices);
+        var nums = this.grabNumbers(str, indices);
 
-//Very careful string handling for exponents
-while(str.indexOf('^') != -1){
-var carInd = str.indexOf("^");
-//indices updated from scratch for multiple carrots in one string, could maybe do this more efficiently but idk seems hard.
-//Could also add a flag so this isn't done the first time through... Also the way the logic works only carrot indices really need to be updated I think
-indices = this.indicesOfOperations(str);
-var car_ind_num = indices.indexOf(carInd);
-var expVal = Math.pow(nums[car_ind_num], nums[car_ind_num + 1]);
-indices.pop(car_ind_num);
+        //Very careful string handling for exponents
+        while(str.indexOf('^') != -1){
+            var carInd = str.indexOf("^");
+            //indices updated from scratch for multiple carrots in one string, could maybe do this more efficiently but idk seems hard.
+            //Could also add a flag so this isn't done the first time through... Also the way the logic works only carrot indices really need to be updated I think
+            indices = this.indicesOfOperations(str);
+            var car_ind_num = indices.indexOf(carInd);
+            var expVal = Math.pow(nums[car_ind_num], nums[car_ind_num + 1]);
+            indices.pop(car_ind_num);
 
-var len_num1 = nums[car_ind_num].toString().length;
-var len_num2 = nums[car_ind_num + 1].toString().length;
+            var len_num1 = nums[car_ind_num].toString().length;
+            var len_num2 = nums[car_ind_num + 1].toString().length;
 
-//Fix the string with the computed exponent
-if(car_ind_num == 0){
-str = expVal.toString() + str.substring(len_num1+len_num2 + 1, str.length)
-}
-else{
-str = str.substring(0, carInd - len_num1) + expVal.toString() + str.substring(carInd + len_num2 + 1, str.length)
-}
-//Fix the list of numbers with the new computation
-//Removes the two necessary numbers and inserts the correct value
-nums.splice(car_ind_num, 2, expVal); 
-}
+            //Fix the string with the computed exponent
+            if(car_ind_num == 0){
+                str = expVal.toString() + str.substring(len_num1+len_num2 + 1, str.length)
+            }
+            else{
+                str = str.substring(0, carInd - len_num1) + expVal.toString() + str.substring(carInd + len_num2 + 1, str.length)
+            }
+            //Fix the list of numbers with the new computation
+            //Removes the two necessary numbers and inserts the correct value
+            nums.splice(car_ind_num, 2, expVal); 
+        }
 
-//Do all the multiplications and divisions
-//For some reason this function return an array with the first element being empty if the first operation is "*" or "/"
-nums = this.doMultandDiv(nums, indices, str);
-if(str.charAt(indices[0]) == "*" || str.charAt(indices[0]) == "/"){
-nums = nums.slice(1);
-}
+        indices = this.indicesOfOperations(str);
 
-//Remove all the multiplcation and division indices as they were computed above
-var newIndices = new Array();
-for(var i = 0; i < indices.length; i++) {
-var currOp = str.charAt(indices[i]);
-if(currOp == "+" || currOp == "-"){
-newIndices.push(indices[i]);
-}
-}
-indices = newIndices;
-var ans = nums[0];
-//Do all the additions and subtractions
-for(var i = 0; i < indices.length; i++){
-ans = this.simpleArithmetic(ans, nums[i+1], str.charAt(indices[i]));
-}
+        //Do all the multiplications and divisions
+        //For some reason this function return an array with the first element being empty if the first operation is "*" or "/"
+        nums = this.doMultandDiv(nums, indices, str);
+        if(str.charAt(indices[0]) == "*" || str.charAt(indices[0]) == "/"){
+            nums = nums.slice(1);
+        }
 
-// If there was an error during calculation just give the string back. 
-if(!this.globalFlag){
-this.globalFlag = true;
-return this.screen;
-}
+        //Remove all the multiplcation and division indices as they were computed above
+        var newIndices = new Array();
+        for(var i = 0; i < indices.length; i++) {
+            var currOp = str.charAt(indices[i]);
+            if(currOp == "+" || currOp == "-"){
+                newIndices.push(indices[i]);
+            }
+        }
+        indices = newIndices;
+        var ans = nums[0];
+
+        //Do all the additions and subtractions
+        for(var i = 0; i < indices.length; i++){
+            ans = this.simpleArithmetic(ans, nums[i+1], str.charAt(indices[i]));
+        }
+
+        // console.log(nums);
+
+        // If there was an error during calculation just give the string back. 
+        if(!this.globalFlag){
+            this.globalFlag = true;
+            return this.screen;
+        }
 
 
-var temp = Number(ans);
-if(temp < this.__MAX_ACC_VAL__){
-return(ans);
-}
-else{
-this.error = "WARNING: Maximum accurate value exceeded. This is not a scientific calculator. This result may be rounded and unreliable."
-this.presentAlert();
-return(ans);
-} 
-}
+        var temp = Number(ans);
+        if(temp < this.__MAX_ACC_VAL__){
+            return(ans);
+        }
+        else{
+            this.error = "WARNING: Maximum accurate value exceeded. This is not a scientific calculator. This result may be rounded and unreliable."
+            this.errorTitle_1 = "Warning"
+            this.presentAlert();
+            return(ans);
+        } 
+    }
 
 // Unit tests!
 testingCalls = function(){
@@ -751,6 +774,7 @@ testingCalls = function(){
 var testStr = "6+3";
 var ans = 9;
 this.testStringToMath(testStr, ans)
+
 // Test basic subtraction
 testStr = "9-3";
 ans = 6;
@@ -945,6 +969,10 @@ testStr = "2^(4)+2^(4)"
 ans = 32;
 this.testStringToMath(testStr, ans)
 
+//Test exponents with large numbers
+testStr = "10^(15)-1"
+ans = 999999999999999;
+this.testStringToMath(testStr, ans)
 }
 
 testStringToMath = function(str, ans){
