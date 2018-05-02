@@ -22,7 +22,7 @@ page-about {
     }
 
     ion-slides {
-        height: initial;
+        height: 100%;
     }
 
     #logo {
@@ -37,7 +37,13 @@ page-about {
 
     #first_slide {
         position: fixed;
-        top: 25%;
+        top: 5%;
     }
+    
+    .no-scroll {
+        .scroll-content{
+            overflow: hidden;
+        }
+      }
 
 }
