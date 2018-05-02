@@ -4,6 +4,10 @@ page-about {
         text-align: center
     }
 
+    ul {
+        text-align: left
+    }
+
     h2 {
         text-align: center
     }
@@ -29,6 +33,11 @@ page-about {
     #equations {
         width: 35%;
         height: 35%;
+    }
+
+    #first_slide {
+        position: fixed;
+        top: 25%;
     }
 
 }

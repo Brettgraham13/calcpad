@@ -1,7 +1,7 @@
 <ion-header>
     <ion-navbar>
         <ion-title>
-            About
+            Tutorial
         </ion-title>
     </ion-navbar>
 </ion-header>
@@ -11,13 +11,12 @@
     <ion-slides pager>
 
         <ion-slide>
-            <h2>CalcPad</h2>
-            <p>
-                Ready to get started using CalcPad? Follow this tutorial!
-            </p>
+            <div id="first_slide">
+            <h2>Ready to get started using CalcPad? Swipe to begin the tutorial!</h2>
             <p>
                 <img id="logo" src="assets/imgs/calcpad_logo.png">
             </p>
+            </div>
         </ion-slide>
 
         <ion-slide>
@@ -42,19 +41,46 @@
         </ion-slide> 
 
         <ion-slide>
-            <h2>Canvas Demo</h2>
+            <h2>Basic Algebra</h2>
             <p>
-                On the CalcPad canvas, you can use your finger to draw mathematical expressions that you'd like to calculate.
+                Draw mathematical expressions on the canvas, and press the equals button in order to calculate them. 
+                Undo, redo, and clear all buttons are also available.
             </p>
-            <video src = "assets/imgs/canvas1.mp4" autoplay loop> </video>
-            <p>
-                Once you're ready to evaluate your expression, draw an equals sign on the canvas.
-            </p>
-            <video src = "assets/imgs/canvas2.mp4" autoplay loop> </video>
-        </ion-slide> 
+            <video src = "assets/imgs/basic_alg.mov" autoplay loop> </video>
+        </ion-slide>
         
         <ion-slide>
-            <h2>Calculator Demo</h2>
+            <h2>Equation Solver</h2>
+            <p>
+                The canvas can solve equations with one unknown, with the variable to be calculated written as a question mark. Scribble over an equation to clear it!
+            </p>
+            <video src = "assets/imgs/solver.mov" autoplay loop> </video>
+        </ion-slide>
+                
+        <ion-slide>
+            <h2>Functions</h2>
+            <p>
+                A wide range of advanced calculation options are available, such as trigonometric functions and logarithms. More complex equations can be typeset.
+            </p>
+            <video src = "assets/imgs/advanced_fun.mov" autoplay loop> </video>
+        </ion-slide>
+        
+        <ion-slide>
+            <h2>Calculator Rules</h2>
+            <p>
+                A traditional calculator is also included in CalcPad, which has the following guidelines:
+            </p>
+            <ul>
+                <li>Invalid strings are not evaluated and will give an error message describing the error</li>
+                <li>Numbers larger than 2^31 - 1 may be rounded and are accompanied by a warning message</li>
+                <li>Numbers larger than 10^15 - 1 are expressed in scientific notation</li>
+                <li>Exponents are denoted by putting two multiplication symbols in a row with the exponent wrapped in parentheses</li>
+                <li>Missing parentheses at the end of a string are autofilled, and a confirmation message checks that the appropriate string was generated</li>
+                <li>Strings larger than 15 characters are not handled</li>
+                <li>Standard order of operations is observed (PEMDAS)</li>
+                <li>A back Button, clear button, and equals button are available</li>
+                <li>Multiplication is implied between parentheses and other sets of parentheses or numbers</li>
+            </ul>
         </ion-slide> 
 
     </ion-slides>
