@@ -77,13 +77,13 @@ compute = function(){
 //REMOVE THIS GET BETTER WAY TO TEST
 // this.testingCalls();
 
-if(this.validString(this.screen)){
-var tempAns = this.stringToMath(this.screen);
-if(tempAns >= this.__MAX_TRUE_VAL__){
-tempAns = Number.parseFloat(tempAns.toPrecision(8)).toExponential();
-}
-this.screen = tempAns.toString();
-}
+    if(this.validString(this.screen)){
+        var tempAns = this.stringToMath(this.screen);
+            if(tempAns >= this.__MAX_TRUE_VAL__){
+                tempAns = Number.parseFloat(tempAns.toPrecision(8)).toExponential();
+            }
+        this.screen = tempAns.toString();
+    }
 }
 
 checkInput = function(input: any, char1 : string, char2: string){
