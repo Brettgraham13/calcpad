@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import {ElementRef, ViewChild} from '@angular/core';
 import * as MyScriptJS from 'myscript/dist/myscript.min.js';
 import * as config from './config.json';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 
 
@@ -16,7 +17,8 @@ export class MyScriptCanvasPage {
   @ViewChild('editor') 
   editor: ElementRef;
   
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, private screenOrientation: ScreenOrientation) {
+    this.screenOrientation.unlock();
 
   }
   appKey = config.applicationKey;
