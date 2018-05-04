@@ -235,7 +235,7 @@ export class MyScriptCanvasPage {
 
   presentPrompt() {
     let alert = this.alertCtrl.create({
-      title: "This is your input in Latex format. To search it on Wolfram Alpha, tap 'WOLFRAM|ALPHA'.",
+      title: "Latex output", //"This is your input in Latex format. To search it on Wolfram Alpha in an external browser, tap 'WOLFRAM|ALPHA'.",
       message: this.latex,
       buttons: [
         {
