@@ -5,6 +5,9 @@ import { AlertController } from 'ionic-angular';
 import * as MyScriptJS from 'myscript/dist/myscript.min.js';
 import * as config from './config.json';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
+
+
 
 @Component({
   selector: 'page-my-script-canvas',
@@ -16,7 +19,8 @@ export class MyScriptCanvasPage {
   @ViewChild('editor') 
   editor: ElementRef;
   
-  constructor(public navCtrl: NavController, private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, private screenOrientation: ScreenOrientation, private alertCtrl: AlertController) {
+    this.screenOrientation.unlock();
 
   }
 
@@ -267,7 +271,6 @@ export class MyScriptCanvasPage {
         },
       },
     });
-    
   }
 
   // Some latex string I used for testing

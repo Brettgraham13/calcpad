@@ -11,6 +11,7 @@ import { MyScriptCanvasPage } from '../pages/my-script-canvas/my-script-canvas';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 // import { CanvasPage } from '../pages/canvas/canvas';
 
 
@@ -40,6 +41,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   ],
   providers: [
     StatusBar,
+    ScreenOrientation,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

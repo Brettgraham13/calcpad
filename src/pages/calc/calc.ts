@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
     @Component({
     selector: 'page-calc',
@@ -8,7 +9,9 @@ import { AlertController } from 'ionic-angular';
     })
 
     export class CalcPage {
-        constructor(public navCtrl: NavController, public alertCtrl: AlertController) {
+        constructor(public navCtrl: NavController, public alertCtrl: AlertController, private screenOrientation: ScreenOrientation) {
+            this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+            
     }
 
     // NOTES: divide by zero is handled differently from all other errors. Maybe should be fixed up, but it might be difficult
