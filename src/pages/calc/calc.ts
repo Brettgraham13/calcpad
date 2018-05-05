@@ -29,6 +29,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
     __MAX_ACC_VAL__ = 2**31-1; // The maximum value that the number class will reliably return to an exact precision
     __MAX_TRUE_VAL__ = 10**15-1; // The largest number we can display in full on our display without it moving onto another line
     __MAX_LENGTH__ = 13; // Maximum characters in a string that fits on the display
+    __MIN_TRUE_VAL__ = 10**(-15);// The smallest number we can display in full on the display
     edit = ""; // A string that can be used as a temporary variable
     //End global variables
 
@@ -72,6 +73,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
             var tempAns = this.stringToMath(this.screen);
             var tempFlag = false;
 
+
             //If the number is too long
             if(tempAns.length >= this.__MAX_LENGTH__){
                 tempFlag = true;
@@ -79,10 +81,12 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
             }
 
             //If the number is too big
-            if(Number.parseFloat(tempAns) > this.__MAX_TRUE_VAL__){
+            if(Number.parseFloat(tempAns) > this.__MAX_TRUE_VAL__ || Number.parseFloat(tempAns) < this.__MIN_TRUE_VAL__){
                 tempFlag  = true;
                 tempAns = Number.parseFloat(tempAns).toPrecision(8);
             }
+
+
             
             //If something changed, update
             if(tempFlag){
