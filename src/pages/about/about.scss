@@ -36,16 +36,41 @@ page-about {
         width: 35%;
         height: 35%;
     }
-
-    #first_slide {
-        position: fixed;
-        top: 5%;
-    }
     
     .no-scroll {
         .scroll-content{
             overflow: hidden;
         }
       }
+
+    .alg-imgs {
+        width: 30%;
+        margin: 10px;
+    }
+
+    #equals {
+        width: 15%;
+    }
+
+    .container {
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+
+    }
+
+    #WA-logo {
+        position: relative;
+        width: 50%;
+        bottom: 0;
+        margin: auto;
+    }
+
+    #WA-code {
+        width: 60%;
+    }
 
 }
