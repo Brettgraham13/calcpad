@@ -1,3 +1,4 @@
 www/
 node_modules/
 src/pages/my-script-canvas/config.json/
+.sourcemaps/

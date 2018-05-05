@@ -20,8 +20,7 @@ export class MyScriptCanvasPage {
   editor: ElementRef;
   
   constructor(public navCtrl: NavController, private screenOrientation: ScreenOrientation, private alertCtrl: AlertController) {
-    this.screenOrientation.unlock();
-
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
   }
 
   appKey = config.applicationKey;
